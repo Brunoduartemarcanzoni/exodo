@@ -206,9 +206,16 @@
             margin-bottom: 15px;
             font-size: 1.3rem;
         }
+        .turma{
+            width: 700px;
+            height: 35px;
+            border-radius: 5px;
+            
+        }
 
         .form-group {
             margin-bottom: 15px;
+            width: 200px;
         }
 
         label {

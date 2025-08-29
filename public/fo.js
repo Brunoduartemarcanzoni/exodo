@@ -2,28 +2,11 @@ async function cadastrarfo(event) {
     event.preventDefault();
 
     const fo = {
-        nome: document.getElementById('func-nome').value,
-        data_de_nascimento: document.getElementById('func-data-nascimento').value,
-        cpf:document.getElementById('func-cpf').value,
-        rg: document.getElementById('func-rg').value,
-        genero: document.getElementById('func-genero').value,
-        estado_civil: document.getElementById('func-estado-civil').value,
-        email: document.getElementById('func-email').value,
-        email_institucional: document.getElementById('func-email-institucional').value,
-        telefone: document.getElementById('func-telefone').value,
-        telefone_alternativo: document.getElementById('func-telefone-alternativo').value,
-        cep: document.getElementById('func-cep').value,
-        logradouro: document.getElementById('func-logradouro').value,
-        numero: document.getElementById('func-numero').value,
-        complemento: document.getElementById('func-complemento').value,
-        bairro: document.getElementById('func-bairro').value,
-        cidade: document.getElementById('func-cidade').value,
-        estado: document.getElementById('func-estado').value,
-        data_adimissão: document.getElementById('func-data-admissao').value,
-        cgm: document.getElementById('func-matricula').value,
-        cargo: document.getElementById('func-cargo').value,
-        carga_horaria: document.getElementById('func-carga-horaria').value,
-        contrato: document.getElementById('func-tipo-contrato').value
+        turma: document.getElementById('turma').value,
+        data: document.getElementById('data').value,
+        tipo_fato:document.getElementById('tipoFato').value,
+        obs: document.getElementById('observacao').value,
+        monitor: document.getElementById('monitor').value,
     };
        
     try {
@@ -48,7 +31,7 @@ async function cadastrarfo(event) {
     }
 }
 
-// Função para listar todos os funcionario ou buscar funcionario por CPF
+// Função para listar todos os fo ou buscar funcionario por CPF
 async function listarfo() {
     // const cpf = document.getElementById('cpf').value.trim();  // Pega o valor do CPF digitado no input
     const nome = document.getElementById('func-nome').value.trim();
