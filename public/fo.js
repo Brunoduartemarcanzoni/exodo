@@ -31,19 +31,18 @@ async function cadastrarfo(event) {
     }
 }
 
-// Função para listar todos os fo ou buscar funcionario por CPF
+// Função para listar todos os fo 
 async function listarfo() {
-    // const cpf = document.getElementById('cpf').value.trim();  // Pega o valor do CPF digitado no input
     const nome = document.getElementById('func-nome').value.trim();
-    const cpf = document.getElementById('func-cpf').value.trim();
+    const cgm= document.getElementById('func-cgm').value.trim();
     const email = document.getElementById('func-email').value.trim();
     const telefone = document.getElementById('func-telefone').value.trim();
 
     let url = '/fo';  // URL padrão para todos os funcionario
 
-    if (cpf) {
+    if (cgm) {
         // Se CPF foi digitado, adiciona o parâmetro de consulta
-        url += `?cpf=${cpf}`;
+        url += `?cgm=${cgm}`;
     }
 
     try {
@@ -61,7 +60,7 @@ async function listarfo() {
                 const linha = document.createElement('tr');
                 linha.innerHTML = `
                     <td>${foItem.nome}</td>
-                    <td>${foItem.cpf}</td>
+                    <td>${foItem.cgm}</td>
                     <td>${foItem.email}</td>
                     <td>${foItem.telefone}</td>
                 `;
@@ -76,19 +75,19 @@ async function listarfo() {
 // Função para atualizar as informações do funcionario
 async function atualizarfo() {
     const nome = document.getElementById('func-nome').value;
-    const cpf = document.getElementById('func-cpf').value;
+    const cgm= document.getElementById('func-cgm').value;
     const email = document.getElementById('func-email').value;
     const telefone = document.getElementById('func-telefone').value;
 
     const foAtualizado = {
         nome,
-        cpf,
+        cgm,
         email,
         telefone,
     };
 
     try {
-        const respo = await fetch(`/fo/cpf/${cpf}`, {
+        const respo = await fetch(`/fo/cgm/${cgm}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
