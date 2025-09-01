@@ -82,12 +82,94 @@ const db = new sqlite3.Database('./database.db', (err) => {
     );
         
     `);
-    
+            db.run(`
+        CREATE TABLE IF NOT EXISTS fo (
+                id_fo,
+                turma,
+                data,
+                tipo_fato,
+                obs,
+                monitor
+    );
+        
+    `);
 
 
     console.log('Tabelas criadas com sucesso.');
 });
 
+
+///////////////////////////// Rotas para fo /////////////////////////////
+///////////////////////////// Rotas para fo /////////////////////////////
+///////////////////////////// Rotas para fo /////////////////////////////
+
+// Cadastrar fo
+app.post('/fo', (req, res) => {
+
+    const { turma, data, tipo_fato, obs, monitor } = req.body;
+
+    if (!data || !turma) {
+        return res.status(400).send('Data e turma são obrigatórios.');
+    }
+
+    const query = `INSERT INTO funcionario (  turma, data, tipo_fato, obs, monitor ) VALUES (?,?,?,?,?)
+`;
+    db.run(query, [  turma, data, tipo_fato, obs, monitor ], function (err) {
+        if (err) {
+            return res.status(500).send('Erro ao cadastrar fo..');
+        }
+        res.status(201).send({ id: this.lastID, message: 'FO cadastrado com sucesso.' });
+    });
+});
+
+// Listar fo
+// Endpoint para listar todos os fo ou buscar por turma
+app.get('/fo', (req, res) => {
+    const data = req.query.data || '';  // Recebe a data da query string (se houver)
+
+    if (data) {
+        // Se data foi passado, busca funcionario que possuam esse CPF ou parte dele
+        const query = `SELECT * FROM fo WHERE data LIKE ?`;
+
+        db.all(query, [`%${data}%`], (err, rows) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: 'Erro ao buscar fo.' });
+            }
+            res.json(rows);  // Retorna os alunos encontrados ou um array vazio
+        });
+    } else {
+        // Se a data não foi passada, retorna todos os fo
+        const query = `SELECT * FROM fo`;
+
+        db.all(query, (err, rows) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: 'Erro ao buscar fo.' });
+            }
+            res.json(rows);  // Retorna todos os fo
+        });
+    }
+});
+
+
+
+// Atualizar fo
+app.put('/funcionario/turma/:turma', (req, res) => {
+    const { turma } = req.params;
+    const {  data, tipo_fato, obs, monitor} = req.body;
+
+    const query = `UPDATE funcionario SET turma ?, data ?, tipo_fato ?, obs ?, monitor ?`;
+    db.run(query, [ turma, data, tipo_fato, obs, monitor], function (err) {
+        if (err) {
+            return res.status(500).send('Erro ao atualizar fo.');
+        }
+        if (this.changes === 0) {
+            return res.status(404).send('fo não encontrado.');
+        }
+        res.send('fo atualizado com sucesso.');
+    });
+});
 
 ///////////////////////////// Rotas para funcionario /////////////////////////////
 ///////////////////////////// Rotas para funcionario /////////////////////////////
