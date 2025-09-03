@@ -84,18 +84,107 @@ const db = new sqlite3.Database('./database.db', (err) => {
     `);
             db.run(`
         CREATE TABLE IF NOT EXISTS fo (
-                id_fo,
-                turma,
-                data,
-                tipo_fato,
-                obs,
-                monitor
+                id_fo INTEGER PRIMARY KEY AUTOINCREMEN,
+                turma TEXT,
+                data DATE,
+                tipo_fato TEXT,
+                obs TEXT,
+                monitor TEXT
+    );
+        
+    `);
+            
+    db.run(`
+        CREATE TABLE IF NOT EXISTS ata (
+                id_ata integer primary KEY AUTOINCREMENT,
+                aluno varchar,
+                dia date not null,
+                assunto varchar not null,
+                monitor varchar,
+                conteudo varchar,
+                encaminhamento varchar,
+                cgm varchar not null UNIQUE,
+                turma varchar not null,
+                prof varchar,
+                fato varchar not null
     );
         
     `);
 
-
     console.log('Tabelas criadas com sucesso.');
+});
+
+
+///////////////////////////// Rotas para ata /////////////////////////////
+///////////////////////////// Rotas para ata /////////////////////////////
+///////////////////////////// Rotas para ata /////////////////////////////
+
+// Cadastrar ata
+app.post('/ata', (req, res) => {
+
+    const {aluno , dia , assunto, monitor, conteudo, encaminhamento , cgm , turma, prof, fato } = req.body;
+
+    if (!prof || !monitor || !aluno || !assunto) {
+        return res.status(400).send('Prof, monitor, aluno e assunto são obrigatórios.');
+    }
+
+    const query = `INSERT INTO funcionario ( aluno , dia , assunto, monitor, conteudo, encaminhamento , cgm , turma, prof, fato) VALUES (?,?,?,?,?,?,?,?,?,?)
+`;
+    db.run(query, [aluno , dia , assunto, monitor, conteudo, encaminhamento , cgm , turma, prof, fato], function (err) {
+        if (err) {
+            return res.status(500).send('Erro ao cadastrar ata..');
+        }
+        res.status(201).send({ id: this.lastID, message: 'Ata cadastrado com sucesso.' });
+    });
+});
+
+// Listar ata
+// Endpoint para listar todos as atas ou buscar por turma
+app.get('/ata', (req, res) => {
+    const data = req.query.data || '';  // Recebe a data da query string (se houver)
+
+    if (data) {
+        // Se data foi passado, busca funcionario que possuam esse CPF ou parte dele
+        const query = `SELECT * FROM ata WHERE data LIKE ?`;
+
+        db.all(query, [`%${data}%`], (err, rows) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: 'Erro ao buscar ata.' });
+            }
+            res.json(rows);  // Retorna os alunos encontrados ou um array vazio
+        });
+    } else {
+        // Se a data não foi passada, retorna todos os fo
+        const query = `SELECT * FROM ata`;
+
+        db.all(query, (err, rows) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: 'Erro ao buscar ata.' });
+            }
+            res.json(rows);  // Retorna todos os ata
+        });
+    }
+});
+
+
+
+// Atualizar fo
+app.put('/ata/turma/:turma', (req, res) => {
+    const { turma } = req.params;
+    const {  data, tipo_fato, obs, monitor} = req.body;
+
+    const query = `UPDATE funcionario SET turma ?, data ?, tipo_fato ?, obs ?, monitor ?`;
+    db.run(query, [ turma, data, tipo_fato, obs, monitor], function (err) {
+        if (err) {
+            return res.status(500).send('Erro ao atualizar fo.');
+        }
+        if (this.changes === 0) {
+            return res.status(404).send('fo não encontrado.');
+        }
+        res.send('fo atualizado com sucesso.');
+    });
 });
 
 
