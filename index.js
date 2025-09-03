@@ -96,7 +96,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
             
     db.run(`
         CREATE TABLE IF NOT EXISTS ata (
-                id_ata integer primary KEY AUTOINCREMENT,
+                id_ata iNTEGER PRIMARY KEY AUTOINCREMENT,
                 aluno varchar,
                 dia date not null,
                 assunto varchar not null,
@@ -111,7 +111,100 @@ const db = new sqlite3.Database('./database.db', (err) => {
         
     `);
 
+
+
+    db.run(`
+        CREATE TABLE IF NOT EXISTS ocorrencia (
+                id_sequencial_ocorrencia INTEGER PRIMARY KEY AUTOINCREMENT,
+                fato_id VARCHAR NOT NULL,
+                cpf_funcionario VARCHAR,
+                data DATE NOT NULL,
+                horario VARCHAR,
+                cgm_aluno VARCHAR,
+                obs VARCHAR,
+                turma VARCHAR NOT NULL,
+                FOREIGN KEY (cpf_funcionario) REFERENCES funcionario(cpf),
+                FOREIGN KEY (cgm_aluno) REFERENCES aluno(cgm)
+    );
+
+    `);
+
     console.log('Tabelas criadas com sucesso.');
+});
+
+
+
+
+///////////////////////////// Rotas para ocorrencia /////////////////////////////
+///////////////////////////// Rotas para ocorrencia /////////////////////////////
+///////////////////////////// Rotas para ocorrencia /////////////////////////////
+
+// Cadastrar ocorrencia
+app.post('/ocorrencia', (req, res) => {
+
+    const {fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma } = req.body;
+
+    if (!fato_id || !data || !turma) {
+        return res.status(400).send('Fato_id, data e turma são obrigatórios.');
+    }
+
+    const query = `INSERT INTO funcionario (fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma ) VALUES (?,?,?,?,?,?,?)
+`;
+    db.run(query, [fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma ], function (err) {
+        if (err) {
+            return res.status(500).send('Erro ao cadastrar ata..');
+        }
+        res.status(201).send({ id: this.lastID, message: 'Ata cadastrado com sucesso.' });
+    });
+});
+
+// Listar ata
+// Endpoint para listar todos as atas ou buscar por turma
+app.get('/ocorrencia', (req, res) => {
+    const data = req.query.data || '';  // Recebe a data da query string (se houver)
+
+    if (data) {
+        // Se data foi passado, busca funcionario que possuam esse CPF ou parte dele
+        const query = `SELECT * FROM ocorrencia WHERE data LIKE ?`;
+
+        db.all(query, [`%${data}%`], (err, rows) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: 'Erro ao buscar ata.' });
+            }
+            res.json(rows);  // Retorna os alunos encontrados ou um array vazio
+        });
+    } else {
+        // Se a data não foi passada, retorna todos os fo
+        const query = `SELECT * FROM ocorrencia`;
+
+        db.all(query, (err, rows) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: 'Erro ao buscar ocorrencia.' });
+            }
+            res.json(rows);  // Retorna todos os ata
+        });
+    }
+});
+
+
+
+// Atualizar fo
+app.put('/ocorrencia/turma/:turma', (req, res) => {
+    const { turma } = req.params;
+    const {  fato_id, cpf_funcionario, data, horario, cgm_aluno, obs } = req.body;
+
+    const query = `UPDATE funcionario SET fato_id ?, cpf_funcionario ?, data ?, horario ?, cgm_aluno ?, obs, turma ?`;
+    db.run(query, [ turma, data, tipo_fato, obs, monitor], function (err) {
+        if (err) {
+            return res.status(500).send('Erro ao atualizar ocorrencia.');
+        }
+        if (this.changes === 0) {
+            return res.status(404).send('ocorrencia não encontrado.');
+        }
+        res.send('fo atualizado com sucesso.');
+    });
 });
 
 
@@ -414,15 +507,6 @@ app.put('/aluno/cgm/:cgm', (req, res) => {
         res.send('Aluno atualizado com sucesso.');
     });
 });
-
-
-
-
-
-
-
-
-
 
 // Teste para verificar se o servidor está rodando
 app.get('/', (req, res) => {
