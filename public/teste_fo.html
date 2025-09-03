@@ -141,28 +141,31 @@
                                 <input type="search" id="turma" class="turma" >
                                 <label for="turma">Selecione a Turma:</label>
 
+
                                 
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Buscar Alunos</button>
+                            <button type="submit" class="btn btn-primary">Buscar turma</button>
                         </form>
 
                         <!-- Resultados da pesquisa -->
                         <div class="search-results">
                             <p>Selecione uma turma e clique em "Buscar Alunos" para ver os alunos disponíveis.</p>
-
-                            <div class="aluno-item selected">
-                                <h3>Ana Silva</h3>
-                                <p>Matrícula: 20231001 | Turma: 1º Ano A</p>
+                              
+                            <div class="form-group">
+                                <label for="tipoFato">turma</label>
+                                <select id="tipoFato" name="tipoFato" required>
+                                <option value="">Selecione a turma</option>
+                                    <option value="turma">6</option>
+                                    <option value="turma">7</option>
+                                    <option value="turma">8</option>
+                                    <option value="turma">9</option>
+                                    <option value="turma">1</option>
+                                    <option value="turma">2</option>
+                                    <option value="turma">3</option>
+                                </select>
                             </div>
-                            <div class="aluno-item">
-                                <h3>Bruno Santos</h3>
-                                <p>Matrícula: 20231002 | Turma: 1º Ano A</p>
-                            </div>
-                            <div class="aluno-item">
-                                <h3>Carolina Oliveira</h3>
-                                <p>Matrícula: 20231003 | Turma: 1º Ano A</p>
-                            </div>
+                     
                         </div>
                     </section>
 
@@ -279,31 +282,7 @@
                         <h2>Atas Registradas</h2>
                         
                         <div class="ata-item">
-                            <div class="ata-header">
-                                <div class="ata-title">Reunião - Ana Silva</div>
-                                <div class="ata-date">15/03/2024</div>
-                            </div>
-                            <p><strong>Assunto:</strong> Acompanhamento comportamental</p>
-                            <p><strong>Participantes:</strong> Coordenação, Professor titular, Responsáveis</p>
-                            <p><strong>Status:</strong> <span class="status-badge status-concluido">Concluído</span></p>
-                            <div class="buttons-container" style="margin-top: 10px;">
-                                <button class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">Visualizar</button>
-                                <button class="btn btn-warning" style="padding: 8px 16px; font-size: 14px;">Editar</button>
-                            </div>
-                        </div>
-
-                        <div class="ata-item">
-                            <div class="ata-header">
-                                <div class="ata-title">Reunião - Bruno Santos</div>
-                                <div class="ata-date">10/03/2024</div>
-                            </div>
-                            <p><strong>Assunto:</strong> Desempenho acadêmico</p>
-                            <p><strong>Participantes:</strong> Coordenação, Professores, Psicóloga</p>
-                            <p><strong>Status:</strong> <span class="status-badge status-andamento">Em Andamento</span></p>
-                            <div class="buttons-container" style="margin-top: 10px;">
-                                <button class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">Visualizar</button>
-                                <button class="btn btn-warning" style="padding: 8px 16px; font-size: 14px;">Editar</button>
-                            </div>
+                          
                         </div>
                     </section>
                 </div>
@@ -357,61 +336,7 @@
                             <button type="button" class="btn btn-primary" onclick="aplicarFiltros()">Aplicar Filtros</button>
                         </form>
                     </section>
-
-                    <!-- Lista de F.O disponíveis para encaminhamento -->
-                    <section class="form-section">
-                        <h2>F.O Disponíveis para Encaminhamento 
-                            <span class="selected-fo-count" id="selectedCount">0 selecionados</span>
-                        </h2>
-                        
-                        <div class="fo-selection-area">
-                            <div class="fo-item priority-high" onclick="toggleFOSelection(this)">
-                                <div class="fo-info">
-                                    <div class="fo-aluno">Ana Silva - 1º Ano A</div>
-                                    <div class="fo-data">15/03/2024</div>
-                                </div>
-                                <div class="fo-tipo tipo-negativo">Comportamento Negativo</div>
-                                <div class="fo-observacao">Comportamento agressivo durante o intervalo. Necessita acompanhamento psicológico urgente...</div>
-                            </div>
-
-                            <div class="fo-item priority-medium" onclick="toggleFOSelection(this)">
-                                <div class="fo-info">
-                                    <div class="fo-aluno">Bruno Santos - 2º Ano B</div>
-                                    <div class="fo-data">12/03/2024</div>
-                                </div>
-                                <div class="fo-tipo tipo-academico">Desempenho Acadêmico</div>
-                                <div class="fo-observacao">Queda significativa nas notas de matemática. Requer reunião com responsáveis...</div>
-                            </div>
-
-                            <div class="fo-item priority-low" onclick="toggleFOSelection(this)">
-                                <div class="fo-info">
-                                    <div class="fo-aluno">Carolina Oliveira - 1º Ano A</div>
-                                    <div class="fo-data">10/03/2024</div>
-                                </div>
-                                <div class="fo-tipo tipo-positivo">Comportamento Positivo</div>
-                                <div class="fo-observacao">Excelente participação em projeto de ciências. Merece reconhecimento...</div>
-                            </div>
-
-                            <div class="fo-item priority-medium" onclick="toggleFOSelection(this)">
-                                <div class="fo-info">
-                                    <div class="fo-aluno">Diego Ferreira - 3º Ano A</div>
-                                    <div class="fo-data">08/03/2024</div>
-                                </div>
-                                <div class="fo-tipo tipo-relacionamento">Relacionamento com Colegas</div>
-                                <div class="fo-observacao">Dificuldades de integração social. Recomenda-se acompanhamento psicológico...</div>
-                            </div>
-
-                            <div class="fo-item priority-high" onclick="toggleFOSelection(this)">
-                                <div class="fo-info">
-                                    <div class="fo-aluno">Eduarda Lima - 2º Ano A</div>
-                                    <div class="fo-data">05/03/2024</div>
-                                </div>
-                                <div class="fo-tipo tipo-participacao">Participação em Aula</div>
-                                <div class="fo-observacao">Não participa das atividades e demonstra sinais de desinteresse constante...</div>
-                            </div>
-                        </div>
-                    </section>
-
+<!-- 
                     <!-- Formulário de encaminhamento -->
                     <section class="form-section">
                         <h2>Dados do Encaminhamento</h2>
@@ -491,33 +416,7 @@
                         <h2>Histórico de Encaminhamentos</h2>
                         
                         <div class="ata-item">
-                            <div class="ata-header">
-                                <div class="ata-title">Encaminhamento para Psicologia</div>
-                                <div class="ata-date">15/03/2024</div>
-                            </div>
-                            <p><strong>Aluno(s):</strong> Ana Silva</p>
-                            <p><strong>Destino:</strong> Psicologia Escolar</p>
-                            <p><strong>Prioridade:</strong> Alta</p>
-                            <p><strong>Status:</strong> <span class="status-badge status-andamento">Em Andamento</span></p>
-                            <div class="buttons-container" style="margin-top: 10px;">
-                                <button class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">Visualizar</button>
-                                <button class="btn btn-warning" style="padding: 8px 16px; font-size: 14px;">Acompanhar</button>
-                            </div>
-                        </div>
-
-                        <div class="ata-item">
-                            <div class="ata-header">
-                                <div class="ata-title">Encaminhamento para Coordenação</div>
-                                <div class="ata-date">12/03/2024</div>
-                            </div>
-                            <p><strong>Aluno(s):</strong> Bruno Santos, Diego Ferreira</p>
-                            <p><strong>Destino:</strong> Coordenação Pedagógica</p>
-                            <p><strong>Prioridade:</strong> Média</p>
-                            <p><strong>Status:</strong> <span class="status-badge status-concluido">Concluído</span></p>
-                            <div class="buttons-container" style="margin-top: 10px;">
-                                <button class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">Visualizar</button>
-                                <button class="btn btn-success" style="padding: 8px 16px; font-size: 14px;">Relatório</button>
-                            </div>
+                            
                         </div>
                     </section>
                 </div>
