@@ -23,7 +23,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
 
 // Criação das tabelas
     db.serialize(() => {
-        db.run(`
+    db.run(`
             CREATE TABLE IF NOT EXISTS aluno (
                 id_aluno INTEGER PRIMARY KEY AUTOINCREMENT,
                 nome TEXT NOT NULL,
@@ -53,7 +53,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
     );
         `);
 
-                db.run(`
+    db.run(`
         CREATE TABLE IF NOT EXISTS funcionario (
                 id_funcionario INTEGER PRIMARY KEY AUTOINCREMENT,
                 nome TEXT NOT NULL,
@@ -82,7 +82,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
     );
         
     `);
-            db.run(`
+    db.run(`
         CREATE TABLE IF NOT EXISTS fo (
                 id_fo INTEGER PRIMARY KEY AUTOINCREMEN,
                 turma TEXT,
@@ -114,17 +114,16 @@ const db = new sqlite3.Database('./database.db', (err) => {
 
 
     db.run(`
-        CREATE TABLE IF NOT EXISTS ocorrencia (
-                id_sequencial_ocorrencia INTEGER PRIMARY KEY AUTOINCREMENT,
-                fato_id VARCHAR NOT NULL,
-                cpf_funcionario VARCHAR,
-                data DATE NOT NULL,
-                horario VARCHAR,
-                cgm_aluno VARCHAR,
-                obs VARCHAR,
-                turma VARCHAR NOT NULL,
-                FOREIGN KEY (cpf_funcionario) REFERENCES funcionario(cpf),
-                FOREIGN KEY (cgm_aluno) REFERENCES aluno(cgm)
+        CREATE TABLE IF NOT EXISTS encaminhamento (
+                id_encaminhamento INTEGER PRIMARY KEY AUTOINCREMENT,
+                tipo_fo TEXT not NULL ,
+                justificativa TEXT not NULL,
+                providencia TEXT,
+                data DATE not NULL,
+                cgm INTEGER,
+                funcionario VARCHAR(14),
+                FOREIGN KEY (cgm) REFERENCES aluno(cgm),
+                FOREIGN KEY (funcionario) REFERENCES funcionario (cpf)
     );
 
     `);
@@ -135,12 +134,12 @@ const db = new sqlite3.Database('./database.db', (err) => {
 
 
 
-///////////////////////////// Rotas para ocorrencia /////////////////////////////
-///////////////////////////// Rotas para ocorrencia /////////////////////////////
-///////////////////////////// Rotas para ocorrencia /////////////////////////////
+///////////////////////////// Rotas para encaminhamento /////////////////////////////
+///////////////////////////// Rotas para encaminhamento /////////////////////////////
+///////////////////////////// Rotas para encaminhamento /////////////////////////////
 
-// Cadastrar ocorrencia
-app.post('/ocorrencia', (req, res) => {
+// Cadastrar encaminhamento
+app.post('/encaminhamento', (req, res) => {
 
     const {fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma } = req.body;
 
@@ -148,7 +147,7 @@ app.post('/ocorrencia', (req, res) => {
         return res.status(400).send('Fato_id, data e turma são obrigatórios.');
     }
 
-    const query = `INSERT INTO funcionario (fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma ) VALUES (?,?,?,?,?,?,?)
+    const query = `INSERT INTO encaminhamento (fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma ) VALUES (?,?,?,?,?,?,?)
 `;
     db.run(query, [fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma ], function (err) {
         if (err) {
@@ -158,14 +157,14 @@ app.post('/ocorrencia', (req, res) => {
     });
 });
 
-// Listar ata
-// Endpoint para listar todos as atas ou buscar por turma
-app.get('/ocorrencia', (req, res) => {
+// Listar encaminhamento
+// Endpoint para listar todos os encaminhamento ou buscar por turma
+app.get('/encaminhamento', (req, res) => {
     const data = req.query.data || '';  // Recebe a data da query string (se houver)
 
     if (data) {
-        // Se data foi passado, busca funcionario que possuam esse CPF ou parte dele
-        const query = `SELECT * FROM ocorrencia WHERE data LIKE ?`;
+        // Se data foi passado, busca encaminhamento que possuam esse CPF ou parte dele
+        const query = `SELECT * FROM encaminhamento WHERE data LIKE ?`;
 
         db.all(query, [`%${data}%`], (err, rows) => {
             if (err) {
@@ -176,12 +175,12 @@ app.get('/ocorrencia', (req, res) => {
         });
     } else {
         // Se a data não foi passada, retorna todos os fo
-        const query = `SELECT * FROM ocorrencia`;
+        const query = `SELECT * FROM encaminhamento`;
 
         db.all(query, (err, rows) => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ message: 'Erro ao buscar ocorrencia.' });
+                return res.status(500).json({ message: 'Erro ao buscar encaminhamento.' });
             }
             res.json(rows);  // Retorna todos os ata
         });
@@ -191,17 +190,17 @@ app.get('/ocorrencia', (req, res) => {
 
 
 // Atualizar fo
-app.put('/ocorrencia/turma/:turma', (req, res) => {
+app.put('/encaminhamento/turma/:turma', (req, res) => {
     const { turma } = req.params;
     const {  fato_id, cpf_funcionario, data, horario, cgm_aluno, obs } = req.body;
 
     const query = `UPDATE funcionario SET fato_id ?, cpf_funcionario ?, data ?, horario ?, cgm_aluno ?, obs, turma ?`;
-    db.run(query, [ turma, data, tipo_fato, obs, monitor], function (err) {
+    db.run(query, [fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma], function (err) {
         if (err) {
-            return res.status(500).send('Erro ao atualizar ocorrencia.');
+            return res.status(500).send('Erro ao atualizar encaminhamento.');
         }
         if (this.changes === 0) {
-            return res.status(404).send('ocorrencia não encontrado.');
+            return res.status(404).send('encaminhamento não encontrado.');
         }
         res.send('fo atualizado com sucesso.');
     });
