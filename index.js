@@ -42,7 +42,6 @@ const db = new sqlite3.Database('./database.db', (err) => {
                 estado TEXT,
                 cgm TEXT,
                 curso TEXT NOT NULL,
-                periodo TEXT,
                 turno TEXT NOT NULL,
                 turma TEXT,
                 nome_responsavel TEXT,
@@ -84,7 +83,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
     `);
     db.run(`
         CREATE TABLE IF NOT EXISTS fo (
-                id_fo INTEGER PRIMARY KEY AUTOINCREMEN,
+                id_fo INTEGER PRIMARY KEY AUTOINCREMENT,
                 turma TEXT,
                 data DATE,
                 tipo_fato TEXT,
@@ -437,15 +436,15 @@ app.put('/funcionario/cpf/:cpf', (req, res) => {
 // Cadastrar aluno
 app.post('/aluno', (req, res) => {
 
-    const {  nome,telefone, email, cpf, rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado, cgm, curso, periodo, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel,   email_responsavel } = req.body;
+    const {  nome,telefone, email, cpf, rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado, cgm, curso, turma, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel,   email_responsavel } = req.body;
 
     if (!nome || !cpf) {
         return res.status(400).send('Nome e CPF são obrigatórios.');
     }
 
-    const query = `INSERT INTO aluno ( nome,telefone, email, cpf, rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado, cgm, curso, periodo, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel,   email_responsavel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    const query = `INSERT INTO aluno ( nome,telefone, email, cpf, rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado, cgm, curso, turma, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel,   email_responsavel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 `;
-    db.run(query, [ nome,telefone, email, cpf, rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado, cgm, curso, periodo, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel, email_responsavel ], function (err) {
+    db.run(query, [ nome,telefone, email, cpf, rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado, cgm, curso, turma, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel, email_responsavel ], function (err) {
         if (err) {
             return res.status(500).send('Erro ao cadastrar aluno..');
         }
@@ -489,11 +488,11 @@ app.get('/alunos', (req, res) => {
 // Atualizar aluno
 app.put('/aluno/cgm/:cgm', (req, res) => {
     const { cgm } = req.params;
-    const {  nome,telefone, email,cpf ,rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado,  curso, periodo, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel,   email_responsavel
+    const {  nome,telefone, email,cpf ,rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado,  curso, turma, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel,   email_responsavel
 
     } = req.body;
 
-    const query = `UPDATE aluno SET nome = ?,telefone = ?, email = ?, cpf = ?, rg = ?, genero = ? , data_de_nascimento = ? , cep = ? , logradouro = ? , numero = ? , complemento = ? , cidade = ? , bairro = ? , estado = ? , cgm = ? , curso = ? , periodo = ? , turno = ? , nome_responsavel = ? , telefone_responsavel = ? , parentesco_responsavel = ? , cpf_responsavel = ? ,   email_responsavel = ? `;
+    const query = `UPDATE aluno SET nome = ?,telefone = ?, email = ?, cpf = ?, rg = ?, genero = ? , data_de_nascimento = ? , cep = ? , logradouro = ? , numero = ? , complemento = ? , cidade = ? , bairro = ? , estado = ? , cgm = ? , curso = ? , turma = ? , turno = ? , nome_responsavel = ? , telefone_responsavel = ? , parentesco_responsavel = ? , cpf_responsavel = ? ,   email_responsavel = ? `;
     db.run(query, [ nome,telefone, email, cpf, rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado, cgm, curso, periodo, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel,   email_responsavel
 
     ], function (err) {
