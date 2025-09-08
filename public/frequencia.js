@@ -47,7 +47,7 @@ async function listarfrequencia() {
 
     let url = '/frequencia';  // URL padrão para todos os funcionario
 
-    if (turma) {
+    if (aluno_nome) {
         // Se turma foi digitado, adiciona o parâmetro de consulta
         url += `?aluno_nome=${aluno_nome}`;
     }
