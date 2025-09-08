@@ -1,4 +1,4 @@
-async function cadastrarfo(event) {
+async function cadastrarencaminhamento(event) {
     event.preventDefault();
 
     const encaminhamento= {
@@ -20,7 +20,7 @@ async function cadastrarfo(event) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(fo)
+            body: JSON.stringify(encaminhamento)
         });
 
         const result = await response.json();
@@ -87,7 +87,7 @@ async function atualizarencaminhamento() {
     const prazo  = document.getElementById('prazoResposta').value.trim();
     const justificativa = document.getElementById('justificativa').value.trim();
 
-    const foAtualizado = {
+    const encaminhamentoAtualizado = {
         turma,
         destino,
         tipo_fato,
