@@ -252,7 +252,7 @@
                             <div class="buttons-container">
                                 <button type="button" class="btn btn-secondary">Voltar</button>
                                 <button type="reset" class="btn btn-danger">Limpar</button>
-                                <button type="submit" class="btn btn-success">Salvar Ata</button>
+                                <button type="submit" class="btn btn-success" onclick="ata(event)">Salvar Ata</button>
                             </div>
                         </form>
                     </section>
@@ -312,7 +312,11 @@
                             <button type="button" class="btn btn-primary" onclick="aplicarFiltros()">Aplicar Filtros</button>
                         </form>
                     </section>
-
+                    <div class="buttons-container">
+                        <button type="button" class="btn btn-secondary">Voltar</button>
+                        <button type="reset" class="btn btn-danger" onclick="limparSelecoes()">Limpar</button>
+                        <button type="submit" class="btn btn-success" onclick=" cadastrarfo(event)">Enviar Encaminhamento</button>
+                    </div>
                     <!-- Lista de F.O disponíveis para encaminhamento -->
                     <section class="form-section">
                      
@@ -387,7 +391,7 @@
                             <div class="buttons-container">
                                 <button type="button" class="btn btn-secondary">Voltar</button>
                                 <button type="reset" class="btn btn-danger" onclick="limparSelecoes()">Limpar</button>
-                                <button type="submit" class="btn btn-success">Enviar Encaminhamento</button>
+                                <button type="submit" class="btn btn-success" onclick=" cadastrarfo(event)">Enviar Encaminhamento</button>
                             </div>
                         </form>
                     </section>

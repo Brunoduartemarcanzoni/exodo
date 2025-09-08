@@ -118,5 +118,4 @@ async function atualizarfrequencia() {
         console.error('Erro ao atualizar frequencia:', error);
         alert('Erro ao atualizar frequencia.');
     }
-
 }
