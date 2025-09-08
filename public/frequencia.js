@@ -89,7 +89,7 @@ async function atualizarfrequencia() {
     const aluno_nome = document.getElementById('prioridade').value.trim();
     const porcentagem = document.getElementById('content3').value.trim();
 
-    const foAtualizado = {
+    const frequenciaAtualizado = {
         turma,
         aluno_nome,
         justificativa,
@@ -118,4 +118,5 @@ async function atualizarfrequencia() {
         console.error('Erro ao atualizar frequencia:', error);
         alert('Erro ao atualizar frequencia.');
     }
+
 }
