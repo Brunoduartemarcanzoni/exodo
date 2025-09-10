@@ -140,32 +140,32 @@ const db = new sqlite3.Database('./database.db', (err) => {
 // Cadastrar encaminhamento
 app.post('/encaminhamento', (req, res) => {
 
-    const {fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma } = req.body;
+    const {filtroTipo, destino,PrazoResposta ,justificativa, turma} = req.body;
 
-    if (!fato_id || !data || !turma) {
+    if (!filtroTipo || !prazoResposta || !turma) {
         return res.status(400).send('Fato_id, data e turma são obrigatórios.');
     }
 
-    const query = `INSERT INTO encaminhamento (fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma ) VALUES (?,?,?,?,?,?,?)
+    const query = `INSERT INTO encaminhamento (filtroTipo, destino, PrazoResposta, justificativa, turma ) VALUES (?,?,?,?,?)
 `;
-    db.run(query, [fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma ], function (err) {
+    db.run(query, [filtroTipo, destino,PrazoResposta ,justificativa, turma ], function (err) {
         if (err) {
             return res.status(500).send('Erro ao cadastrar ata..');
         }
-        res.status(201).send({ id: this.lastID, message: 'Ata cadastrado com sucesso.' });
+        res.status(201).send({ id: this.lastID, message: 'encaminhamento cadastrado com sucesso.' });
     });
 });
 
 // Listar encaminhamento
 // Endpoint para listar todos os encaminhamento ou buscar por turma
 app.get('/encaminhamento', (req, res) => {
-    const data = req.query.data || '';  // Recebe a data da query string (se houver)
+    const prazoResposta = req.query.prazoResposta || '';  // Recebe a data da query string (se houver)
 
-    if (data) {
+    if (prazoResposta) {
         // Se data foi passado, busca encaminhamento que possuam esse CPF ou parte dele
         const query = `SELECT * FROM encaminhamento WHERE data LIKE ?`;
 
-        db.all(query, [`%${data}%`], (err, rows) => {
+        db.all(query, [`%${prazoResposta}%`], (err, rows) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ message: 'Erro ao buscar ata.' });
@@ -188,7 +188,7 @@ app.get('/encaminhamento', (req, res) => {
 
 
 
-// Atualizar fo
+// Atualizar encaminhamento
 app.put('/encaminhamento/turma/:turma', (req, res) => {
     const { turma } = req.params;
     const {  fato_id, cpf_funcionario, data, horario, cgm_aluno, obs } = req.body;
@@ -350,6 +350,8 @@ app.put('/funcionario/turma/:turma', (req, res) => {
         res.send('fo atualizado com sucesso.');
     });
 });
+
+
 
 ///////////////////////////// Rotas para funcionario /////////////////////////////
 ///////////////////////////// Rotas para funcionario /////////////////////////////

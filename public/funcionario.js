@@ -22,7 +22,6 @@ async function cadastrarfuncionario(event) {
         cidade: document.getElementById('func-cidade').value,
         estado: document.getElementById('func-estado').value,
         data_adimissão: document.getElementById('func-data-admissao').value,
-        cgm: document.getElementById('func-matricula').value,
         cargo: document.getElementById('func-cargo').value,
         carga_horaria: document.getElementById('func-carga-horaria').value,
         contrato: document.getElementById('func-tipo-contrato').value,

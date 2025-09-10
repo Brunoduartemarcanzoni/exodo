@@ -137,11 +137,28 @@
 
                         <!-- Formulário de pesquisa -->
                         <form id="searchForm">
-                            <div class="form-group">
-                                <input type="search" id="turma" class="turma" >
-                                <label for="turma">Selecione a Turma:</label>
-
-                                
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="required" for="aluno-periodo">Turma</label>
+                                <select id="aluno-turma" name="periodo" required>
+                                    <option value="">Selecione</option>
+                                    <option value="9º Ano A">9º Ano A</option>
+                                    <option value="9º Ano B">9º Ano B</option>
+                                    <option value="9º Ano C">9º Ano C</option>
+                                    <option value="9º Ano D">9º Ano D</option>
+                                    <option value="1º Ano A">1º Ano A</option>
+                                    <option value="1º Ano B">1º Ano B</option>
+                                    <option value="1º Ano C">1º Ano C</option>
+                                    <option value="1º Ano D">1º Ano D</option>
+                                    <option value="2º Ano A">2º Ano A</option>
+                                    <option value="2º Ano B">2º Ano B</option>
+                                    <option value="2º Ano C">2º Ano C</option>
+                                    <option value="2º Ano D">2º Ano D</option>
+                                    <option value="3º Ano A">3º Ano A</option>
+                                    <option value="3º Ano B">3º Ano B</option>
+                                    <option value="3º Ano C">3º Ano C</option>
+                                    <option value="3º Ano D">3º Ano D</option>
+                                </select>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Buscar Alunos</button>
@@ -259,7 +276,22 @@
 
                     <!-- Lista de atas existentes -->
                     <section class="form-section">
-                       
+                        <div class="student-info" id="studentInfo">
+                            <button type="button" onclick="listarAlunos()" class="alinhaBtns">Listar aluno</button>
+                   
+                     <table>
+                       <thead>
+                           <tr>
+                           
+                               <th>Nome</th>
+                               <th>CGM</th>
+                               <th>CPF</th>
+                               <th>Email</th>
+                               <th>Turma</th>
+                               <th>Telefone Responsavel</th>
+                           
+                           </tr>
+                       </thead>
                     </section>
                 </div>
 
