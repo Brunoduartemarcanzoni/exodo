@@ -23,7 +23,7 @@ async function cadastrarfuncionario(event) {
         cgm: document.getElementById('func-matricula').value,
         cargo: document.getElementById('func-cargo').value,
         carga_horaria: document.getElementById('func-carga-horaria').value,
-        contrato: document.getElementById('func-tipo-contrato').value
+        contrato: document.getElementById('func-tipo-contrato').value,
     };
        
     try {

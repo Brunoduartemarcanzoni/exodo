@@ -10,8 +10,7 @@ async function cadastrarAluno(event) {
         cpf: document.getElementById("aluno-cpf").value,
         rg: document.getElementById("aluno-rg").value,
         genero: document.getElementById("aluno-genero").value,
-        data_de_nascimento: document.getElementById("aluno-data-nascimento")
-            .value,
+        data_de_nascimento: document.getElementById("aluno-data-nascimento").value,
         cep: document.getElementById("aluno-cep").value,
         logradouro: document.getElementById("aluno-logradouro").value,
         numero: document.getElementById("aluno-numero").value,
@@ -25,8 +24,7 @@ async function cadastrarAluno(event) {
         turno: document.getElementById("aluno-turno").value,
         nome_responsavel: document.getElementById("resp0-nome").value,
         telefone_responsavel: document.getElementById("resp0-telefone").value,
-        parentesco_responsavel:
-            document.getElementById("resp0-parentesco").value,
+        parentesco_responsavel: document.getElementById("resp0-parentesco").value,
         cpf_responsavel: document.getElementById("resp0-cpf").value,
         email_responsavel: document.getElementById("resp0-email").value,
     };

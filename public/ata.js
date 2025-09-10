@@ -1,126 +1,114 @@
-async function ata(event) {
+async function cadastrarfo(event) {
     event.preventDefault();
 
-    const funcionario = {
-        nome: document.getElementById('func-nome').value,
-        data_de_nascimento: document.getElementById('func-data-nascimento').value,
-        cpf:document.getElementById('func-cpf').value,
-        rg: document.getElementById('func-rg').value,
-        genero: document.getElementById('func-genero').value,
-        estado_civil: document.getElementById('func-estado-civil').value,
-        email: document.getElementById('func-email').value,
-        email_institucional: document.getElementById('func-email-institucional').value,
-        telefone: document.getElementById('func-telefone').value,
-        telefone_alternativo: document.getElementById('func-telefone-alternativo').value,
-        cep: document.getElementById('func-cep').value,
-        logradouro: document.getElementById('func-logradouro').value,
-        numero: document.getElementById('func-numero').value,
-        complemento: document.getElementById('func-complemento').value,
-        bairro: document.getElementById('func-bairro').value,
-        cidade: document.getElementById('func-cidade').value,
-        estado: document.getElementById('func-estado').value,
-        data_adimissão: document.getElementById('func-data-admissao').value,
-        cgm: document.getElementById('func-matricula').value,
-        cargo: document.getElementById('func-cargo').value,
-        carga_horaria: document.getElementById('func-carga-horaria').value,
-        contrato: document.getElementById('func-tipo-contrato').value
+    const ata = {
+        turma: document.getElementById("turma").value,
+        aluno: document.getElementById("aluno").value,
+        data: document.getElementById("data").value,
+        assunto: document.getElementById("assunto").value,
+        conteudo: document.getElementById("conteudo").value,
+        encaminhamento: document.getElementById("encaminhamento").value,
+        cgm: document.getElementById("cgm").value,
+        prof: document.getElementById("prof").value,
+        fato: document.getElementById("fato").value,
+        participantes: document.getElementById("participantes").value,
     };
-       
+
     try {
-        const response = await fetch('/funcionario', {
-            method: 'POST',
+        const response = await fetch("/ata", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(funcionario)
+            body: JSON.stringify(fo),
         });
 
         const result = await response.json();
         if (response.ok) {
-            alert('Funcionario cadastrado com sucesso!');
-            //document.getElementById('funcionario-form').reset();
+            alert("ata cadastrado com sucesso!");
+            //document.getElementById('fo-form').reset();
         } else {
             alert(`Erro: ${result.message}`);
         }
     } catch (err) {
-        console.error('Erro na solicitação:', err);
-        alert('Erro ao cadastrar cliente.');
+        console.error("Erro na solicitação:", err);
+        alert("Erro ao cadastrar");
     }
 }
 
-// Função para listar todos os funcionario ou buscar funcionario por CPF
-async function listarfuncionario() {
-    // const cpf = document.getElementById('cpf').value.trim();  // Pega o valor do CPF digitado no input
-    const nome = document.getElementById('func-nome').value.trim();
-    const cpf = document.getElementById('func-cpf').value.trim();
-    const email = document.getElementById('func-email').value.trim();
-    const telefone = document.getElementById('func-telefone').value.trim();
+// Função para listar todos os fo
+async function listarata() {
+    const nome = document.getElementById("func-nome").value.trim();
+    const cgm = document.getElementById("func-cgm").value.trim();
+    const email = document.getElementById("func-email").value.trim();
+    const telefone = document.getElementById("func-telefone").value.trim();
 
-    let url = '/funcionario';  // URL padrão para todos os funcionario
+    let url = "/ata"; // URL padrão para todos os funcionario
 
-    if (cpf) {
+    if (cgm) {
         // Se CPF foi digitado, adiciona o parâmetro de consulta
-        url += `?cpf=${cpf}`;
+        url += `?cgm=${cgm}`;
     }
 
     try {
         const respo = await fetch(url);
-        const funcionario = await respo.json();
+        const ata = await respo.json();
 
-        const tabela = document.getElementById('tabela-funcionario');
-        tabela.innerHTML = ''; // Limpa a tabela antes de preencher
+        const tabela = document.getElementById("tabela-ata");
+        tabela.innerHTML = ""; // Limpa a tabela antes de preencher
 
-        if (!Array.isArray(funcionario) || funcionario.length === 0) {
+        if (!Array.isArray(fo) || fo.length === 0) {
             // Caso não encontre funcionario, exibe uma mensagem
-            tabela.innerHTML = '<tr><td colspan="6">Nenhum funcionario encontrado.</td></tr>';
+            tabela.innerHTML =
+                '<tr><td colspan="6">Nenhum fo encontrado.</td></tr>';
         } else {
-            funcionario.forEach(funcionarioItem => {
-                const linha = document.createElement('tr');
+            fo.forEach((foItem) => {
+                const linha = document.createElement("tr");
                 linha.innerHTML = `
-                    <td>${funcionarioItem.nome}</td>
-                    <td>${funcionarioItem.cpf}</td>
-                    <td>${funcionarioItem.email}</td>
-                    <td>${funcionarioItem.telefone}</td>
-                `;
+                  <td>${ataItem.nome}</td>
+                  <td>${ataItem.cgm}</td>
+                  <td>${ataItem.email}</td>
+                  <td>${ataItem.telefone}</td>
+              `;
                 tabela.appendChild(linha);
             });
         }
     } catch (error) {
-        console.error('Erro ao listar funcionario:', error);
+        console.error("Erro ao listar ata:", error);
     }
 }
 
 // Função para atualizar as informações do funcionario
-async function atualizarfuncionario() {
-    const nome = document.getElementById('func-nome').value;
-    const cpf = document.getElementById('func-cpf').value;
-    const email = document.getElementById('func-email').value;
-    const telefone = document.getElementById('func-telefone').value;
+async function atualizarfo() {
+    const nome = document.getElementById("func-nome").value;
+    const cgm = document.getElementById("func-cgm").value;
+    const email = document.getElementById("func-email").value;
+    const telefone = document.getElementById("func-telefone").value;
 
-    const funcionarioAtualizado = {
+    const ataAtualizado = {
         nome,
-        cpf,
+        cgm,
         email,
         telefone,
     };
 
     try {
-        const respo = await fetch(`/funcionario/cpf/${cpf}`, {
-            method: 'PUT',
+        const respo = await fetch(`/ata/cgm/${cgm}`, {
+            method: "PUT",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(funcionarioAtualizado)
+            body: JSON.stringify(foAtualizado),
         });
 
         if (respo.ok) {
-            alert('funcionario atualizado com sucesso!');
+            alert("ata atualizado com sucesso!");
         } else {
             const errorMessage = await respo.text();
-            alert('Erro ao atualizar funcionario: ' + errorMessage);
+            alert("Erro ao atualizar ata: " + errorMessage);
         }
     } catch (error) {
-        console.error('Erro ao atualizar funcionario:', error);
-        alert('Erro ao atualizar funcionario.');
+        console.error("Erro ao atualizar ata:", error);
+        alert("Erro ao atualizar ata.");
     }
 }
