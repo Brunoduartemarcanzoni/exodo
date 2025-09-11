@@ -5,12 +5,12 @@ async function cadastrarencaminhamento(event) {
         turma : document.getElementById('filtroTurma').value,
         destino: document.getElementById('destino'),
         prazo: document.getElementById('prazoResposta').value,
-        tipo_fato:document.getElementById('filtroTipo').value,
+        tipo_fo:document.getElementById('filtroTipo').value,
         prioridade: document.getElementById('prioridade').value,
         justificativa: document.getElementById('justifictiva').value,
         acoes: document.getElementById('acoesSugeridas').value,
         responsavel: document.getElementById('responsavelEncaminhamento').value,
-        destiatario: document.getElementById('destinatario').value,
+        funcionario: document.getElementById('destinatario').value,
     };
        
     try {
@@ -40,7 +40,7 @@ async function cadastrarencaminhamento(event) {
 async function listarencaminhamento() {
     const  turma  = document.getElementById('filtroTurma').value.trim();
     const  destino = document.getElementById('destino').value.trim();
-    const tipo_fato =document.getElementById('filtroTipo').value.trim();
+    const tipo_fo =document.getElementById('filtroTipo').value.trim();
     const acoes = document.getElementById('acoesSugeridas').value.trim();
     const prazo  = document.getElementById('prazoResposta').value.trim();
 
@@ -103,7 +103,7 @@ async function atualizarencaminhamento() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(foAtualizado)
+            body: JSON.stringify(encaminhamentoAtualizado)
         });
 
         if (respo.ok) {

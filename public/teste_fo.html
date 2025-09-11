@@ -295,8 +295,7 @@
                     </section>
                 </div>
 
-                <!-- Conteúdo da Aba: Encaminhamento F.O -->
-                <div id="encaminhamento" class="tab-content">
+               <div id="encaminhamento" class="tab-content">
                     <div class="encaminhar-info">
                         <h3>Encaminhamento de Fatos Observados</h3>
                         <p>Selecione os F.O registrados que necessitam de encaminhamento para outros setores ou profissionais.</p>
@@ -311,22 +310,12 @@
                                 <label for="filtroTurma">Filtrar por Turma:</label>
                                 <select id="filtroTurma" name="filtroTurma">
                                     <option value="">Todas as turmas</option>
-                                        <option value="9º Ano A">9º Ano A</option>
-                                        <option value="9º Ano B">9º Ano B</option>
-                                        <option value="9º Ano C">9º Ano C</option>
-                                        <option value="9º Ano D">9º Ano D</option>
-                                        <option value="1º Ano A">1º Ano A</option>
-                                        <option value="1º Ano B">1º Ano B</option>
-                                        <option value="1º Ano C">1º Ano C</option>
-                                        <option value="1º Ano D">1º Ano D</option>
-                                        <option value="2º Ano A">2º Ano A</option>
-                                        <option value="2º Ano B">2º Ano B</option>
-                                        <option value="2º Ano C">2º Ano C</option>
-                                        <option value="2º Ano D">2º Ano D</option>
-                                        <option value="3º Ano A">3º Ano A</option>
-                                        <option value="3º Ano B">3º Ano B</option>
-                                        <option value="3º Ano C">3º Ano C</option>
-                                        <option value="3º Ano D">3º Ano D</option>
+                                    <option value="1A">1º Ano A</option>
+                                    <option value="1B">1º Ano B</option>
+                                    <option value="2A">2º Ano A</option>
+                                    <option value="2B">2º Ano B</option>
+                                    <option value="3A">3º Ano A</option>
+                                    <option value="3B">3º Ano B</option>
                                 </select>
                             </div>
 
@@ -354,14 +343,59 @@
                             <button type="button" class="btn btn-primary" onclick="aplicarFiltros()">Aplicar Filtros</button>
                         </form>
                     </section>
-                    <div class="buttons-container">
-                        <button type="button" class="btn btn-secondary">Voltar</button>
-                        <button type="reset" class="btn btn-danger" onclick="limparSelecoes()">Limpar</button>
-                        <button type="submit" class="btn btn-success" onclick=" cadastrarencaminhamento(event)">Enviar Encaminhamento</button>
-                    </div>
+
                     <!-- Lista de F.O disponíveis para encaminhamento -->
                     <section class="form-section">
-                     
+                        <h2>F.O Disponíveis para Encaminhamento 
+                            <span class="selected-fo-count" id="selectedCount">0 selecionados</span>
+                        </h2>
+                        
+                        <div class="fo-selection-area">
+                            <div class="fo-item priority-high" onclick="toggleFOSelection(this)">
+                                <div class="fo-info">
+                                    <div class="fo-aluno">Ana Silva - 1º Ano A</div>
+                                    <div class="fo-data">15/03/2024</div>
+                                </div>
+                                <div class="fo-tipo tipo-negativo">Comportamento Negativo</div>
+                                <div class="fo-observacao">Comportamento agressivo durante o intervalo. Necessita acompanhamento psicológico urgente...</div>
+                            </div>
+
+                            <div class="fo-item priority-medium" onclick="toggleFOSelection(this)">
+                                <div class="fo-info">
+                                    <div class="fo-aluno">Bruno Santos - 2º Ano B</div>
+                                    <div class="fo-data">12/03/2024</div>
+                                </div>
+                                <div class="fo-tipo tipo-academico">Desempenho Acadêmico</div>
+                                <div class="fo-observacao">Queda significativa nas notas de matemática. Requer reunião com responsáveis...</div>
+                            </div>
+
+                            <div class="fo-item priority-low" onclick="toggleFOSelection(this)">
+                                <div class="fo-info">
+                                    <div class="fo-aluno">Carolina Oliveira - 1º Ano A</div>
+                                    <div class="fo-data">10/03/2024</div>
+                                </div>
+                                <div class="fo-tipo tipo-positivo">Comportamento Positivo</div>
+                                <div class="fo-observacao">Excelente participação em projeto de ciências. Merece reconhecimento...</div>
+                            </div>
+
+                            <div class="fo-item priority-medium" onclick="toggleFOSelection(this)">
+                                <div class="fo-info">
+                                    <div class="fo-aluno">Diego Ferreira - 3º Ano A</div>
+                                    <div class="fo-data">08/03/2024</div>
+                                </div>
+                                <div class="fo-tipo tipo-relacionamento">Relacionamento com Colegas</div>
+                                <div class="fo-observacao">Dificuldades de integração social. Recomenda-se acompanhamento psicológico...</div>
+                            </div>
+
+                            <div class="fo-item priority-high" onclick="toggleFOSelection(this)">
+                                <div class="fo-info">
+                                    <div class="fo-aluno">Eduarda Lima - 2º Ano A</div>
+                                    <div class="fo-data">05/03/2024</div>
+                                </div>
+                                <div class="fo-tipo tipo-participacao">Participação em Aula</div>
+                                <div class="fo-observacao">Não participa das atividades e demonstra sinais de desinteresse constante...</div>
+                            </div>
+                        </div>
                     </section>
 
                     <!-- Formulário de encaminhamento -->
@@ -433,14 +467,44 @@
                             <div class="buttons-container">
                                 <button type="button" class="btn btn-secondary">Voltar</button>
                                 <button type="reset" class="btn btn-danger" onclick="limparSelecoes()">Limpar</button>
-                                <button type="submit" class="btn btn-success" onclick=" cadastrarencaminhamento(event)">Enviar Encaminhamento</button>
+                                <button type="submit" class="btn btn-success">Enviar Encaminhamento</button>
                             </div>
                         </form>
                     </section>
 
                     <!-- Histórico de encaminhamentos -->
                     <section class="form-section">
+                        <h2>Histórico de Encaminhamentos</h2>
                         
+                        <div class="ata-item">
+                            <div class="ata-header">
+                                <div class="ata-title">Encaminhamento para Psicologia</div>
+                                <div class="ata-date">15/03/2024</div>
+                            </div>
+                            <p><strong>Aluno(s):</strong> Ana Silva</p>
+                            <p><strong>Destino:</strong> Psicologia Escolar</p>
+                            <p><strong>Prioridade:</strong> Alta</p>
+                            <p><strong>Status:</strong> <span class="status-badge status-andamento">Em Andamento</span></p>
+                            <div class="buttons-container" style="margin-top: 10px;">
+                                <button class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">Visualizar</button>
+                                <button class="btn btn-warning" style="padding: 8px 16px; font-size: 14px;">Acompanhar</button>
+                            </div>
+                        </div>
+
+                        <div class="ata-item">
+                            <div class="ata-header">
+                                <div class="ata-title">Encaminhamento para Coordenação</div>
+                                <div class="ata-date">12/03/2024</div>
+                            </div>
+                            <p><strong>Aluno(s):</strong> Bruno Santos, Diego Ferreira</p>
+                            <p><strong>Destino:</strong> Coordenação Pedagógica</p>
+                            <p><strong>Prioridade:</strong> Média</p>
+                            <p><strong>Status:</strong> <span class="status-badge status-concluido">Concluído</span></p>
+                            <div class="buttons-container" style="margin-top: 10px;">
+                                <button class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">Visualizar</button>
+                                <button class="btn btn-success" style="padding: 8px 16px; font-size: 14px;">Relatório</button>
+                            </div>
+                        </div>
                     </section>
                 </div>
             </div>

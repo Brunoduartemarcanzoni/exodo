@@ -140,15 +140,15 @@ const db = new sqlite3.Database('./database.db', (err) => {
 // Cadastrar encaminhamento
 app.post('/encaminhamento', (req, res) => {
 
-    const {filtroTipo, destino,PrazoResposta ,justificativa, turma} = req.body;
+    const {tipo_fo, destino,Prazo ,justificativa, turma} = req.body;
 
-    if (!filtroTipo || !prazoResposta || !turma) {
+    if (!tipo_fo || !prazo|| !turma) {
         return res.status(400).send('Fato_id, data e turma são obrigatórios.');
     }
 
-    const query = `INSERT INTO encaminhamento (filtroTipo, destino, PrazoResposta, justificativa, turma ) VALUES (?,?,?,?,?)
+    const query = `INSERT INTO encaminhamento (tipo_fo, destino, Prazo justificativa, turma ) VALUES (?,?,?,?,?)
 `;
-    db.run(query, [filtroTipo, destino,PrazoResposta ,justificativa, turma ], function (err) {
+    db.run(query, [tipo_fo, destino,Prazo ,justificativa, turma ], function (err) {
         if (err) {
             return res.status(500).send('Erro ao cadastrar ata..');
         }
@@ -159,13 +159,13 @@ app.post('/encaminhamento', (req, res) => {
 // Listar encaminhamento
 // Endpoint para listar todos os encaminhamento ou buscar por turma
 app.get('/encaminhamento', (req, res) => {
-    const prazoResposta = req.query.prazoResposta || '';  // Recebe a data da query string (se houver)
+    const prazo = req.query.prazo || '';  // Recebe a data da query string (se houver)
 
-    if (prazoResposta) {
+    if (prazo) {
         // Se data foi passado, busca encaminhamento que possuam esse CPF ou parte dele
         const query = `SELECT * FROM encaminhamento WHERE data LIKE ?`;
 
-        db.all(query, [`%${prazoResposta}%`], (err, rows) => {
+        db.all(query, [`%${prazo}%`], (err, rows) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ message: 'Erro ao buscar ata.' });
