@@ -33,16 +33,17 @@ async function cadastrarfo(event) {
 
 // Função para listar todos os fo 
 async function listarfo() {
-    const nome = document.getElementById('func-nome').value.trim();
-    const cgm= document.getElementById('func-cgm').value.trim();
-    const email = document.getElementById('func-email').value.trim();
-    const telefone = document.getElementById('func-telefone').value.trim();
+    const turma = document.getElementById('turma').value.trim();
+    const data= document.getElementById('data').value.trim();
+    const tipo_fato = document.getElementById('tipoFato').value.trim();
+    const obs = document.getElementById('observacaor').value.trim();
+    const monitor = document.getElementById('monitor').value.trim();
 
     let url = '/fo';  // URL padrão para todos os funcionario
 
     if (cgm) {
         // Se CPF foi digitado, adiciona o parâmetro de consulta
-        url += `?cgm=${cgm}`;
+        url += `?turma=${turma}`;
     }
 
     try {
@@ -59,10 +60,11 @@ async function listarfo() {
             fo.forEach(foItem => {
                 const linha = document.createElement('tr');
                 linha.innerHTML = `
-                    <td>${foItem.nome}</td>
-                    <td>${foItem.cgm}</td>
-                    <td>${foItem.email}</td>
-                    <td>${foItem.telefone}</td>
+                    <td>${foItem.turma}</td>
+                    <td>${foItem.data}</td>
+                    <td>${foItem.monitor}</td>
+                     <td>${foItem.tipo_fato}</td>
+                    <td>${foItem.obs}</td>
                 `;
                 tabela.appendChild(linha);
             });
@@ -74,20 +76,18 @@ async function listarfo() {
 
 // Função para atualizar as informações do funcionario
 async function atualizarfo() {
-    const nome = document.getElementById('func-nome').value;
-    const cgm= document.getElementById('func-cgm').value;
-    const email = document.getElementById('func-email').value;
-    const telefone = document.getElementById('func-telefone').value;
+    const turma= document.getElementById('turma').value;
+    const data= document.getElementById('data').value;
+    const tipo_fato = document.getElementById('tipoFato').value;
 
     const foAtualizado = {
-        nome,
-        cgm,
-        email,
-        telefone,
+       turma,
+       data,
+       tipo_fato
     };
 
     try {
-        const respo = await fetch(`/fo/cgm/${cgm}`, {
+        const respo = await fetch(`/fo/turma/${turma}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

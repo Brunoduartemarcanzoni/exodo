@@ -65,10 +65,15 @@ async function listarencaminhamento() {
             encaminhamento.forEach(encaminhamentoItem => {
                 const linha = document.createElement('tr');
                 linha.innerHTML = `
-                    <td>${encaminhamentoItem.nome}</td>
-                    <td>${encaminhamentoItem.cgm}</td>
-                    <td>${encaminhamentoItem.email}</td>
-                    <td>${encaminhamentoItem.telefone}</td>
+                    <td>${encaminhamentoItem.turma}</td>
+                    <td>${encaminhamentoItem.destino}</td>
+                    <td>${encaminhamentoItem.prazo}</td>
+                    <td>${encaminhamentoItem.tipo_fo}</td>
+                    <td>${encaminhamentoItem.prioridade}</td>
+                    <td>${encaminhamentoItem.justificativa}</td>
+                    <td>${encaminhamentoItem.acoes}</td>
+                    <td>${encaminhamentoItem.responsavel}</td>
+                    <td>${encaminhamentoItem.funcionario}</td>
                 `;
                 tabela.appendChild(linha);
             });
