@@ -73,7 +73,6 @@ const db = new sqlite3.Database('./database.db', (err) => {
                 cidade TEXT,
                 estado TEXT,
                 data_adimissão DATE,
-                cgm INTEGER,
                 cargo TEXT,
                 carga_horaria INTEGER,
                 contrato TEXT
@@ -360,15 +359,15 @@ app.put('/funcionario/turma/:turma', (req, res) => {
 // Cadastrar funcionario
 app.post('/funcionario', (req, res) => {
 
-    const { nome, data_de_nascimento, cpf, rg, genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cgm, cargo, carga_horaria, contrato } = req.body;
+    const { nome, data_de_nascimento, cpf, rg, genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cargo, carga_horaria, contrato } = req.body;
 
     if (!nome || !cpf) {
         return res.status(400).send('Nome e CPF são obrigatórios.');
     }
 
-    const query = `INSERT INTO funcionario (  nome, data_de_nascimento, cpf, rg, genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cgm, cargo, carga_horaria, contrato ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    const query = `INSERT INTO funcionario (  nome, data_de_nascimento, cpf, rg, genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cargo, carga_horaria, contrato ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 `;
-    db.run(query, [  nome, data_de_nascimento, cpf, rg, genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cgm, cargo, carga_horaria, contrato ], function (err) {
+    db.run(query, [  nome, data_de_nascimento, cpf, rg, genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cargo, carga_horaria, contrato ], function (err) {
         if (err) {
             return res.status(500).send('Erro ao cadastrar funcionario..');
         }
@@ -411,10 +410,10 @@ app.get('/funcionario', (req, res) => {
 // Atualizar funcionario
 app.put('/funcionario/cpf/:cpf', (req, res) => {
     const { cpf } = req.params;
-    const {  nome, data_de_nascimento, rg,genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cgm, cargo, carga_horaria, contrato} = req.body;
+    const {  nome, data_de_nascimento, rg,genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cargo, carga_horaria, contrato} = req.body;
 
-    const query = `UPDATE funcionario SET nome = ?, data_de_nascimento = ?, cpf = ?, rg = ?, genero = ?, estado_civil = ?, email = ?, email_institucional = ?, telefone = ?, telefone_alternativo = ?, cep = ?, logradouro = ?, numero = ?, complemento = ?, bairro = ?, cidade = ?, estado = ?, data_adimissão = ?, cgm = ?, cargo = ?, carga_horaria = ?, contrato = ?`;
-    db.run(query, [ nome, data_de_nascimento, cpf, rg, genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cgm, cargo, carga_horaria, contrato ], function (err) {
+    const query = `UPDATE funcionario SET nome = ?, data_de_nascimento = ?, cpf = ?, rg = ?, genero = ?, estado_civil = ?, email = ?, email_institucional = ?, telefone = ?, telefone_alternativo = ?, cep = ?, logradouro = ?, numero = ?, complemento = ?, bairro = ?, cidade = ?, estado = ?, data_adimissão = ?, cargo = ?, carga_horaria = ?, contrato = ?`;
+    db.run(query, [ nome, data_de_nascimento, cpf, rg, genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cargo, carga_horaria, contrato ], function (err) {
         if (err) {
             return res.status(500).send('Erro ao atualizar funcionario.');
         }

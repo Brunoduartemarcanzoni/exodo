@@ -1,5 +1,3 @@
-const { response } = require("express");
-
 async function cadastrarfuncionario(event) {
     event.preventDefault();
 
