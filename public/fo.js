@@ -1,47 +1,48 @@
 async function cadastrarfo(event) {
     event.preventDefault();
 
+    alert("ate aqui vai ")
     const fo = {
-        turma: document.getElementById('turma').value,
+        turma: document.getElementById('aluno-turma').value,
         data: document.getElementById('data').value,
-        tipo_fato:document.getElementById('tipoFato').value,
+        tipo_fato: document.getElementById('tipoFato').value,
         obs: document.getElementById('observacao').value,
-        monitor: document.getElementById('monitor').value,
+        monitor: document.getElementById('monitor').value
     };
-       
+     alert("ate ")
     try {
         const response = await fetch('/fo', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(fo)
+            body: JSON.stringify(fo),
         });
-
+         alert("ate aqui  ")
         const result = await response.json();
         if (response.ok) {
-            alert('fo cadastrado com sucesso!');
+            alert('Foi cadastrado com sucesso!');
             //document.getElementById('fo-form').reset();
         } else {
             alert(`Erro: ${result.message}`);
         }
-    } catch (err) {
-        console.error('Erro na solicitação:', err);
-        alert('Erro ao cadastrar cliente.');
-    }
+        } catch (err) {
+            console.error('Erro na solicitação:', err);
+            alert('Erro ao cadastrar fo.1');
+        }
 }
 
-// Função para listar todos os fo 
+// Função para listar todos os fo
 async function listarfo() {
     const turma = document.getElementById('turma').value.trim();
-    const data= document.getElementById('data').value.trim();
-    const tipo_fato = document.getElementById('tipoFato').value.trim();
-    const obs = document.getElementById('observacaor').value.trim();
-    const monitor = document.getElementById('monitor').value.trim();
+    // const data = document.getElementById('data').value.trim();
+    // const tipo_fato = document.getElementById('tipoFato').value.trim();
+    // const obs = document.getElementById('observacao').value.trim();
+    // const monitor = document.getElementById('monitor').value.trim();
 
-    let url = '/fo';  // URL padrão para todos os funcionario
+    let url = "/fo"; // URL padrão para todos os funcionario
 
-    if (cgm) {
+    if (turma) {
         // Se CPF foi digitado, adiciona o parâmetro de consulta
         url += `?turma=${turma}`;
     }
@@ -55,9 +56,10 @@ async function listarfo() {
 
         if (!Array.isArray(fo) || fo.length === 0) {
             // Caso não encontre funcionario, exibe uma mensagem
-            tabela.innerHTML = '<tr><td colspan="6">Nenhum fo encontrado.</td></tr>';
+            tabela.innerHTML =
+                '<tr><td colspan="6">Nenhum fo encontrado.</td></tr>';
         } else {
-            fo.forEach(foItem => {
+            fo.forEach((foItem) => {
                 const linha = document.createElement('tr');
                 linha.innerHTML = `
                     <td>${foItem.turma}</td>
@@ -76,23 +78,23 @@ async function listarfo() {
 
 // Função para atualizar as informações do funcionario
 async function atualizarfo() {
-    const turma= document.getElementById('turma').value;
-    const data= document.getElementById('data').value;
+    const turma = document.getElementById('turma').value;
+    const data = document.getElementById('data').value;
     const tipo_fato = document.getElementById('tipoFato').value;
 
     const foAtualizado = {
-       turma,
-       data,
-       tipo_fato
+        turma,
+        data,
+        tipo_fato,
     };
 
     try {
         const respo = await fetch(`/fo/turma/${turma}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(foAtualizado)
+            body: JSON.stringify(foAtualizado),
         });
 
         if (respo.ok) {

@@ -7,6 +7,7 @@
     <title>Registro de Fatos Observados (F.O)</title>
     <link rel="stylesheet" href="geral.css">
     <link rel="stylesheet" href="Fo.css">
+    <script src="fo.js"></script>       
 
 </head>
 <body>
@@ -275,34 +276,31 @@
                     </section>
 
                     <!-- Lista de atas existentes -->
-                    <!-- Lista de atas existentes -->
-<section class="form-section">
-    <div class="student-info" id="studentInfo">
-        <button type="button" onclick="listarAlunos()" class="alinhaBtns">Listar aluno</button>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>CGM</th>
-                    <th>CPF</th>
-                    <th>Email</th>
-                    <th>Turma</th>
-                    <th>Telefone Responsavel</th>
-                </tr>
-            </thead>
-            <tbody>
+                    <section class="form-section">
+                        <div class="student-info" id="studentInfo">
+                            <button type="button" onclick="listarAlunos()" class="alinhaBtns">Listar aluno</button>
+                   
+                     <table>
+                       <thead>
+                           <tr>
+                           
+                               <th>Nome</th>
+                               <th>CGM</th>
+                               <th>CPF</th>
+                               <th>Email</th>
+                               <th>Turma</th>
+                               <th>Telefone Responsavel</th>
+                           
+                           </tr>
+                       </thead>
+                    </section>
+                </div>
 
-                <!-- Linhas da tabela aqui -->
-            </tbody>
-        </table>
-    </div>
-</section>
-</div> <!-- Fecha div id="atas" -->
-            <div id="encaminhamento" class="tab-content">
-    <div class="encaminhar-info">
-        <h3>Encaminhamento de Fatos Observados</h3>
-        <p>Selecione os F.O registrados que necessitam de encaminhamento para outros setores ou profissionais.</p>
-    </div>
+               <div id="encaminhamento" class="tab-content">
+                    <div class="encaminhar-info">
+                        <h3>Encaminhamento de Fatos Observados</h3>
+                        <p>Selecione os F.O registrados que necessitam de encaminhamento para outros setores ou profissionais.</p>
+                    </div>
 
                     <!-- Filtros para seleção de F.O -->
                     <section class="form-section">
@@ -553,39 +551,6 @@
             document.getElementById('selectedCount').textContent = count + ' selecionados';
         }
 
-        // Atualizar resumo dos F.O selecionados
-        function updateFOSummary() {
-            const selectedFOs = document.querySelectorAll('.fo-item.selected');
-            const summaryDiv = document.getElementById('foSummary');
-            
-            if (selectedFOs.length === 0) {
-                summaryDiv.innerHTML = '<p>Nenhum F.O selecionado ainda. Clique nos itens acima para selecioná-los.</p>';
-                return;
-            }
-
-            let summaryHTML = '';
-            selectedFOs.forEach((fo, index) => {
-                const aluno = fo.querySelector('.fo-aluno').textContent;
-                const data = fo.querySelector('.fo-data').textContent;
-                const tipo = fo.querySelector('.fo-tipo').textContent;
-                
-                summaryHTML += `
-                    <div style="margin-bottom: 10px; padding: 8px; background-color: #e9ecef; border-radius: 4px; border-left: 3px solid #28a745;">
-                        <strong>${index + 1}.</strong> ${aluno} - ${data}<br>
-                        <small><strong>Tipo:</strong> ${tipo}</small>
-                    </div>
-                `;
-            });
-            
-            summaryDiv.innerHTML = summaryHTML;
-        }
-
-        // Aplicar filtros
-        function aplicarFiltros() {
-            // Implementar lógica de filtros aqui
-            alert('Filtros aplicados! (Funcionalidade a ser implementada)');
-        }
-
         // Limpar seleções
         function limparSelecoes() {
             const selectedFOs = document.querySelectorAll('.fo-item.selected');
@@ -609,32 +574,6 @@
                 ataDataInput.value = today;
             }
         });
-
-        // Handlers para formulários
-        document.getElementById('registroForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('F.O registrado com sucesso!');
-        });
-
-        document.getElementById('ataForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Ata salva com sucesso!');
-        });
-
-        document.getElementById('encaminhamentoForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const selectedFOs = document.querySelectorAll('.fo-item.selected');
-            if (selectedFOs.length === 0) {
-                alert('Selecione pelo menos um F.O para encaminhar!');
-                return;
-            }
-            alert('Encaminhamento enviado com sucesso!');
-        });
-
-        document.getElementById('searchForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Busca realizada! (Funcionalidade a ser implementada)');
-        });
     </script>
 </body>
-</html>>
+</html>
