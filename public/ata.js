@@ -61,7 +61,7 @@ async function listarata() {
             tabela.innerHTML =
                 '<tr><td colspan="6">Nenhum ata encontrado.</td></tr>';
         } else {
-            ata.atarEach((ataItem) => {
+          ata.forEach((ataItem) =>  {
                 const linha = document.createElement("tr");
                 linha.innerHTML = `
                   <td>${ataItem.aluno}</td>
@@ -81,12 +81,12 @@ async function listarata() {
 
 // Função para atualizar as inatarmações do ata
 async function atualizarata() {
-        aluno = document.getElementById("ataAluno").value,
-        data = document.getElementById("ataData").value,
-        assunto = document.getElementById("ataAssunto").value,
-        conteudo = document.getElementById("ataConteudo").value,
-        participantes = document.getElementById("ataParticipantes").value
-
+        const aluno = document.getElementById("ataAluno").value;
+        const data = document.getElementById("ataData").value;
+        const assunto = document.getElementById("ataAssunto").value;
+        const conteudo = document.getElementById("ataConteudo").value;
+        const participantes = document.getElementById("ataParticipantes").value;
+        
     const ataAtualizado = {
         aluno,
         data,

@@ -117,8 +117,9 @@ const db = new sqlite3.Database('./database.db', (err) => {
                 tipo_fo TEXT not NULL ,
                 justificativa TEXT not NULL,
                 providencia TEXT,
-                data DATE not NULL,
+                dia DATE not NULL,
                 cgm INTEGER,
+                obs integer,
                 funcionario VARCHAR(14),
                 FOREIGN KEY (cgm) REFERENCES aluno(cgm),
                 FOREIGN KEY (funcionario) REFERENCES funcionario (cpf)
@@ -218,7 +219,7 @@ app.post('/ata', (req, res) => {
         return res.status(400).send('Prof, monitor, aluno e assunto são obrigatórios.');
     }
 
-    const query = `INSERT INTO funcionario ( aluno , dia , assunto, monitor, conteudo, encaminhamento , cgm , turma, prof, fato) VALUES (?,?,?,?,?,?,?,?,?,?)
+    const query = `INSERT INTO ata( aluno , dia , assunto, monitor, conteudo, encaminhamento , cgm , turma, prof, fato) VALUES (?,?,?,?,?,?,?,?,?,?)
 `;
     db.run(query, [aluno , dia , assunto, monitor, conteudo, encaminhamento , cgm , turma, prof, fato], function (err) {
         if (err) {
@@ -229,15 +230,15 @@ app.post('/ata', (req, res) => {
 });
 
 // Listar ata
-// Endpoint para listar todos as atas ou buscar por turma
+// Endpoint para listar todos as atas ou buscar por data
 app.get('/ata', (req, res) => {
-    const data = req.query.data || '';  // Recebe a data da query string (se houver)
+    const dia = req.query.data || '';  // Recebe a data da query string (se houver)
 
-    if (data) {
-        // Se data foi passado, busca funcionario que possuam esse CPF ou parte dele
-        const query = `SELECT * FROM ata WHERE data LIKE ?`;
+    if (dia) {
+        // Se data foi passado, busca funcionario que possuam esse data ou parte dele
+        const query = `SELECT * FROM ata WHERE dia LIKE ?`;
 
-        db.all(query, [`%${data}%`], (err, rows) => {
+        db.all(query, [`%${dia}%`], (err, rows) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ message: 'Erro ao buscar ata.' });
@@ -245,7 +246,7 @@ app.get('/ata', (req, res) => {
             res.json(rows);  // Retorna os alunos encontrados ou um array vazio
         });
     } else {
-        // Se a data não foi passada, retorna todos os fo
+        // Se a data não foi passada, retorna todos os ata
         const query = `SELECT * FROM ata`;
 
         db.all(query, (err, rows) => {
@@ -260,20 +261,20 @@ app.get('/ata', (req, res) => {
 
 
 
-// Atualizar fo
+// Atualizar ata
 app.put('/ata/turma/:turma', (req, res) => {
     const { turma } = req.params;
-    const {  data, tipo_fato, obs, monitor} = req.body;
+    const {  dia, tipo_fo, obs, monitor} = req.body;
 
-    const query = `UPDATE funcionario SET turma ?, data ?, tipo_fato ?, obs ?, monitor ?`;
-    db.run(query, [ turma, data, tipo_fato, obs, monitor], function (err) {
+    const query = `UPDATE ata SET turma = ?, dia = ?, tipo_fato = ?, obs = ?, monitor = ? `;
+    db.run(query, [ turma, dia, tipo_fo, obs, monitor], function (err) {
         if (err) {
-            return res.status(500).send('Erro ao atualizar fo.');
+            return res.status(500).send('Erro ao atualizar ata.');
         }
         if (this.changes === 0) {
-            return res.status(404).send('fo não encontrado.');
+            return res.status(404).send('ata não encontrado.');
         }
-        res.send('fo atualizado com sucesso.');
+        res.send('ata atualizado com sucesso.');
     });
 });
 
@@ -287,11 +288,11 @@ app.post('/fo', (req, res) => {
 
     const { turma, data, tipo_fato, obs, monitor } = req.body;
 
-    if (!data || !turma) {
-        return res.status(400).send('Data e turma são obrigatórios.');
+    if (!data || !turma || !tipo_fato || !monitor) {
+        return res.status(400).send('Data,turma,fo e monitor são obrigatórios.');
     }
 
-    const query = `INSERT INTO funcionario (  turma, data, tipo_fato, obs, monitor ) VALUES (?,?,?,?,?)
+    const query = `INSERT INTO fo (  turma, data, tipo_fato, obs, monitor ) VALUES (?,?,?,?,?)
 `;
     db.run(query, [  turma, data, tipo_fato, obs, monitor ], function (err) {
         if (err) {
@@ -307,7 +308,7 @@ app.get('/fo', (req, res) => {
     const data = req.query.data || '';  // Recebe a data da query string (se houver)
 
     if (data) {
-        // Se data foi passado, busca funcionario que possuam esse CPF ou parte dele
+        // Se data foi passado, busca fo que possuam esse data ou parte dele
         const query = `SELECT * FROM fo WHERE data LIKE ?`;
 
         db.all(query, [`%${data}%`], (err, rows) => {
@@ -334,11 +335,11 @@ app.get('/fo', (req, res) => {
 
 
 // Atualizar fo
-app.put('/funcionario/turma/:turma', (req, res) => {
+app.put('/fo/turma/:turma', (req, res) => {
     const { turma } = req.params;
     const {  data, tipo_fato, obs, monitor} = req.body;
 
-    const query = `UPDATE funcionario SET turma ?, data ?, tipo_fato ?, obs ?, monitor ?`;
+    const query = `UPDATE fo SET turma = ?, data = ?, tipo_fato = ?, obs = ?, monitor = ?  `;
     db.run(query, [ turma, data, tipo_fato, obs, monitor], function (err) {
         if (err) {
             return res.status(500).send('Erro ao atualizar fo.');

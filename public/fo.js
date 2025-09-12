@@ -62,7 +62,7 @@ async function listarfo() {
             fo.forEach((foItem) => {
                 const linha = document.createElement('tr');
                 linha.innerHTML = `
-                    <td>${foItem.turma}</td>
+                    <td>${foItem.aluno-turma}</td>
                     <td>${foItem.data}</td>
                     <td>${foItem.monitor}</td>
                      <td>${foItem.tipo_fato}</td>
@@ -78,14 +78,20 @@ async function listarfo() {
 
 // Função para atualizar as informações do funcionario
 async function atualizarfo() {
-    const turma = document.getElementById('turma').value;
+    const turma = document.getElementById('aluno-turma').value;
     const data = document.getElementById('data').value;
+    const obs = document.getElementById('observacao').value;
     const tipo_fato = document.getElementById('tipoFato').value;
+    const monitor = document.getElementById('monitor').value;
+
 
     const foAtualizado = {
         turma,
         data,
+        obs,
         tipo_fato,
+        monitor
+
     };
 
     try {
