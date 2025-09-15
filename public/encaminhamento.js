@@ -4,11 +4,13 @@ async function cadastrarencaminhamento(event) {
     const encaminhamento= {
         turma : document.getElementById('filtroTurma').value,
         destino: document.getElementById('destino'),
+        dia: document.getElementById('').value,
+        obs:document.getElementById('').value,
         prazo: document.getElementById('prazoResposta').value,
         tipo_fo:document.getElementById('filtroTipo').value,
         prioridade: document.getElementById('prioridade').value,
         justificativa: document.getElementById('justifictiva').value,
-        acoes: document.getElementById('acoesSugeridas').value,
+        providencia: document.getElementById('acoesSugeridas').value,
         responsavel: document.getElementById('responsavelEncaminhamento').value,
         funcionario: document.getElementById('destinatario').value,
     };
@@ -41,7 +43,7 @@ async function listarencaminhamento() {
     const  turma  = document.getElementById('filtroTurma').value.trim();
     const  destino = document.getElementById('destino').value.trim();
     const tipo_fo =document.getElementById('filtroTipo').value.trim();
-    const acoes = document.getElementById('acoesSugeridas').value.trim();
+    const providencia = document.getElementById('acoesSugeridas').value.trim();
     const prazo  = document.getElementById('prazoResposta').value.trim();
 
     let url = '/encaminhamento';  // URL padrão para todos os funcionario
@@ -71,7 +73,7 @@ async function listarencaminhamento() {
                     <td>${encaminhamentoItem.tipo_fo}</td>
                     <td>${encaminhamentoItem.prioridade}</td>
                     <td>${encaminhamentoItem.justificativa}</td>
-                    <td>${encaminhamentoItem.acoes}</td>
+                    <td>${encaminhamentoItem.providencia}</td>
                     <td>${encaminhamentoItem.responsavel}</td>
                     <td>${encaminhamentoItem.funcionario}</td>
                 `;
@@ -88,7 +90,7 @@ async function atualizarencaminhamento() {
     const  turma  = document.getElementById('filtroTurma').value.trim();
     const  destino = document.getElementById('destino').value.trim();
     const tipo_fato =document.getElementById('filtroTipo').value.trim();
-    const acoes = document.getElementById('acoesSugeridas').value.trim();
+    const providencia = document.getElementById('acoesSugeridas').value.trim();
     const prazo  = document.getElementById('prazoResposta').value.trim();
     const justificativa = document.getElementById('justificativa').value.trim();
 
@@ -96,7 +98,7 @@ async function atualizarencaminhamento() {
         turma,
         destino,
         tipo_fato,
-        acoes,
+        providencia,
         prazo,
        justificativa 
           

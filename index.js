@@ -118,6 +118,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
                 justificativa TEXT not NULL,
                 providencia TEXT,
                 dia DATE not NULL,
+                turma integer,
                 cgm INTEGER,
                 obs integer,
                 funcionario VARCHAR(14),
@@ -140,15 +141,15 @@ const db = new sqlite3.Database('./database.db', (err) => {
 // Cadastrar encaminhamento
 app.post('/encaminhamento', (req, res) => {
 
-    const {tipo_fo, destino,Prazo ,justificativa, turma} = req.body;
+    const {tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario,Prazo ,justificativa, turma,} = req.body;
 
     if (!tipo_fo || !prazo|| !turma) {
         return res.status(400).send('Fato_id, data e turma são obrigatórios.');
     }
 
-    const query = `INSERT INTO encaminhamento (tipo_fo, destino, Prazo justificativa, turma ) VALUES (?,?,?,?,?)
+    const query = `INSERT INTO encaminhamento (tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario, Prazo justificativa, turma ) VALUES (?,?,?,?,?)
 `;
-    db.run(query, [tipo_fo, destino,Prazo ,justificativa, turma ], function (err) {
+    db.run(query, [tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario,Prazo ,justificativa, turma ], function (err) {
         if (err) {
             return res.status(500).send('Erro ao cadastrar ata..');
         }
@@ -161,7 +162,7 @@ app.post('/encaminhamento', (req, res) => {
 app.get('/encaminhamento', (req, res) => {
     const prazo = req.query.prazo || '';  // Recebe a data da query string (se houver)
 
-    if (prazo) {
+    if (dia) {
         // Se data foi passado, busca encaminhamento que possuam esse CPF ou parte dele
         const query = `SELECT * FROM encaminhamento WHERE data LIKE ?`;
 
@@ -191,10 +192,10 @@ app.get('/encaminhamento', (req, res) => {
 // Atualizar encaminhamento
 app.put('/encaminhamento/turma/:turma', (req, res) => {
     const { turma } = req.params;
-    const {  fato_id, cpf_funcionario, data, horario, cgm_aluno, obs } = req.body;
+    const {  tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario,Prazo ,justificativa  } = req.body;
 
     const query = `UPDATE funcionario SET fato_id ?, cpf_funcionario ?, data ?, horario ?, cgm_aluno ?, obs, turma ?`;
-    db.run(query, [fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma], function (err) {
+    db.run(query, [tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario,Prazo ,justificativa, turma ], function (err) {
         if (err) {
             return res.status(500).send('Erro ao atualizar encaminhamento.');
         }
