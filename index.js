@@ -1,28 +1,27 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const sqlite3 = require('sqlite3').verbose();
-
+const express = require("express");
+const bodyParser = require("body-parser");
+const sqlite3 = require("sqlite3").verbose();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Serve os arquivos estáticos da pasta "public"
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 // Configura o body-parser para ler JSON
 app.use(bodyParser.json());
 
 // Conexão com o banco de dados SQLite
-const db = new sqlite3.Database('./database.db', (err) => {
+const db = new sqlite3.Database("./database.db", (err) => {
     if (err) {
-        console.error('Erro ao conectar ao banco de dados:', err.message);
+        console.error("Erro ao conectar ao banco de dados:", err.message);
     } else {
-        console.log('Conectado ao banco de dados SQLite.');
+        console.log("Conectado ao banco de dados SQLite.");
     }
 });
 
 // Criação das tabelas
-    db.serialize(() => {
+db.serialize(() => {
     db.run(`
             CREATE TABLE IF NOT EXISTS aluno (
                 id_aluno INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -91,7 +90,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
     );
         
     `);
-            
+
     db.run(`
         CREATE TABLE IF NOT EXISTS ata (
                 id_ata iNTEGER PRIMARY KEY AUTOINCREMENT,
@@ -109,8 +108,6 @@ const db = new sqlite3.Database('./database.db', (err) => {
         
     `);
 
-
-
     db.run(`
         CREATE TABLE IF NOT EXISTS encaminhamento (
                 id_encaminhamento INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -127,39 +124,42 @@ const db = new sqlite3.Database('./database.db', (err) => {
 
     `);
 
-    console.log('Tabelas criadas com sucesso.');
+    console.log("Tabelas criadas com sucesso.");
 });
-
-
-
 
 ///////////////////////////// Rotas para encaminhamento /////////////////////////////
 ///////////////////////////// Rotas para encaminhamento /////////////////////////////
 ///////////////////////////// Rotas para encaminhamento /////////////////////////////
 
 // Cadastrar encaminhamento
-app.post('/encaminhamento', (req, res) => {
+app.post("/encaminhamento", (req, res) => {
+    const { tipo_fo, destino, Prazo, justificativa, turma } = req.body;
 
-    const {tipo_fo, destino,Prazo ,justificativa, turma} = req.body;
-
-    if (!tipo_fo || !prazo|| !turma) {
-        return res.status(400).send('Fato_id, data e turma são obrigatórios.');
+    if (!tipo_fo || !prazo || !turma) {
+        return res.status(400).send("Fato_id, data e turma são obrigatórios.");
     }
 
     const query = `INSERT INTO encaminhamento (tipo_fo, destino, Prazo justificativa, turma ) VALUES (?,?,?,?,?)
 `;
-    db.run(query, [tipo_fo, destino,Prazo ,justificativa, turma ], function (err) {
-        if (err) {
-            return res.status(500).send('Erro ao cadastrar ata..');
-        }
-        res.status(201).send({ id: this.lastID, message: 'encaminhamento cadastrado com sucesso.' });
-    });
+    db.run(
+        query,
+        [tipo_fo, destino, Prazo, justificativa, turma],
+        function (err) {
+            if (err) {
+                return res.status(500).send("Erro ao cadastrar ata..");
+            }
+            res.status(201).send({
+                id: this.lastID,
+                message: "encaminhamento cadastrado com sucesso.",
+            });
+        },
+    );
 });
 
 // Listar encaminhamento
 // Endpoint para listar todos os encaminhamento ou buscar por turma
-app.get('/encaminhamento', (req, res) => {
-    const prazo = req.query.prazo || '';  // Recebe a data da query string (se houver)
+app.get("/encaminhamento", (req, res) => {
+    const prazo = req.query.prazo || ""; // Recebe a data da query string (se houver)
 
     if (prazo) {
         // Se data foi passado, busca encaminhamento que possuam esse CPF ou parte dele
@@ -168,9 +168,9 @@ app.get('/encaminhamento', (req, res) => {
         db.all(query, [`%${prazo}%`], (err, rows) => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ message: 'Erro ao buscar ata.' });
+                return res.status(500).json({ message: "Erro ao buscar ata." });
             }
-            res.json(rows);  // Retorna os alunos encontrados ou um array vazio
+            res.json(rows); // Retorna os alunos encontrados ou um array vazio
         });
     } else {
         // Se a data não foi passada, retorna todos os fo
@@ -179,60 +179,96 @@ app.get('/encaminhamento', (req, res) => {
         db.all(query, (err, rows) => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ message: 'Erro ao buscar encaminhamento.' });
+                return res
+                    .status(500)
+                    .json({ message: "Erro ao buscar encaminhamento." });
             }
-            res.json(rows);  // Retorna todos os ata
+            res.json(rows); // Retorna todos os ata
         });
     }
 });
 
-
-
 // Atualizar encaminhamento
-app.put('/encaminhamento/turma/:turma', (req, res) => {
+app.put("/encaminhamento/turma/:turma", (req, res) => {
     const { turma } = req.params;
-    const {  fato_id, cpf_funcionario, data, horario, cgm_aluno, obs } = req.body;
+    const { fato_id, cpf_funcionario, data, horario, cgm_aluno, obs } =
+        req.body;
 
     const query = `UPDATE funcionario SET fato_id ?, cpf_funcionario ?, data ?, horario ?, cgm_aluno ?, obs, turma ?`;
-    db.run(query, [fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma], function (err) {
-        if (err) {
-            return res.status(500).send('Erro ao atualizar encaminhamento.');
-        }
-        if (this.changes === 0) {
-            return res.status(404).send('encaminhamento não encontrado.');
-        }
-        res.send('fo atualizado com sucesso.');
-    });
+    db.run(
+        query,
+        [fato_id, cpf_funcionario, data, horario, cgm_aluno, obs, turma],
+        function (err) {
+            if (err) {
+                return res
+                    .status(500)
+                    .send("Erro ao atualizar encaminhamento.");
+            }
+            if (this.changes === 0) {
+                return res.status(404).send("encaminhamento não encontrado.");
+            }
+            res.send("fo atualizado com sucesso.");
+        },
+    );
 });
-
 
 ///////////////////////////// Rotas para ata /////////////////////////////
 ///////////////////////////// Rotas para ata /////////////////////////////
 ///////////////////////////// Rotas para ata /////////////////////////////
 
 // Cadastrar ata
-app.post('/ata', (req, res) => {
-
-    const {aluno , dia , assunto, monitor, conteudo, encaminhamento , cgm , turma, prof, fato } = req.body;
+app.post("/ata", (req, res) => {
+    const {
+        aluno,
+        dia,
+        assunto,
+        monitor,
+        conteudo,
+        encaminhamento,
+        cgm,
+        turma,
+        prof,
+        fato,
+    } = req.body;
 
     if (!prof || !monitor || !aluno || !assunto) {
-        return res.status(400).send('Prof, monitor, aluno e assunto são obrigatórios.');
+        return res
+            .status(400)
+            .send("prof, monitor, aluno e assunto são obrigatórios.");
     }
 
     const query = `INSERT INTO ata( aluno , dia , assunto, monitor, conteudo, encaminhamento , cgm , turma, prof, fato) VALUES (?,?,?,?,?,?,?,?,?,?)
 `;
-    db.run(query, [aluno , dia , assunto, monitor, conteudo, encaminhamento , cgm , turma, prof, fato], function (err) {
-        if (err) {
-            return res.status(500).send('Erro ao cadastrar ata..');
-        }
-        res.status(201).send({ id: this.lastID, message: 'Ata cadastrado com sucesso.' });
-    });
+    db.run(
+        query,
+        [
+            aluno,
+            dia,
+            assunto,
+            monitor,
+            conteudo,
+            encaminhamento,
+            cgm,
+            turma,
+            prof,
+            fato,
+        ],
+        function (err) {
+            if (err) {
+                return res.status(500).send("Erro ao cadastrar ata..");
+            }
+            res.status(201).send({
+                id: this.lastID,
+                message: "Ata cadastrado com sucesso.",
+            });
+        },
+    );
 });
 
 // Listar ata
 // Endpoint para listar todos as atas ou buscar por data
-app.get('/ata', (req, res) => {
-    const dia = req.query.data || '';  // Recebe a data da query string (se houver)
+app.get("/ata", (req, res) => {
+    const dia = req.query.data || ""; // Recebe a data da query string (se houver)
 
     if (dia) {
         // Se data foi passado, busca funcionario que possuam esse data ou parte dele
@@ -241,9 +277,9 @@ app.get('/ata', (req, res) => {
         db.all(query, [`%${dia}%`], (err, rows) => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ message: 'Erro ao buscar ata.' });
+                return res.status(500).json({ message: "Erro ao buscar ata." });
             }
-            res.json(rows);  // Retorna os alunos encontrados ou um array vazio
+            res.json(rows); // Retorna os alunos encontrados ou um array vazio
         });
     } else {
         // Se a data não foi passada, retorna todos os ata
@@ -252,60 +288,61 @@ app.get('/ata', (req, res) => {
         db.all(query, (err, rows) => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ message: 'Erro ao buscar ata.' });
+                return res.status(500).json({ message: "Erro ao buscar ata." });
             }
-            res.json(rows);  // Retorna todos os ata
+            res.json(rows); // Retorna todos os ata
         });
     }
 });
 
-
-
 // Atualizar ata
-app.put('/ata/turma/:turma', (req, res) => {
+app.put("/ata/turma/:turma", (req, res) => {
     const { turma } = req.params;
-    const {  dia, tipo_fo, obs, monitor} = req.body;
+    const { dia, tipo_fo, obs, monitor } = req.body;
 
     const query = `UPDATE ata SET turma = ?, dia = ?, tipo_fato = ?, obs = ?, monitor = ? `;
-    db.run(query, [ turma, dia, tipo_fo, obs, monitor], function (err) {
+    db.run(query, [turma, dia, tipo_fo, obs, monitor], function (err) {
         if (err) {
-            return res.status(500).send('Erro ao atualizar ata.');
+            return res.status(500).send("Erro ao atualizar ata.");
         }
         if (this.changes === 0) {
-            return res.status(404).send('ata não encontrado.');
+            return res.status(404).send("ata não encontrado.");
         }
-        res.send('ata atualizado com sucesso.');
+        res.send("ata atualizado com sucesso.");
     });
 });
-
 
 ///////////////////////////// Rotas para fo /////////////////////////////
 ///////////////////////////// Rotas para fo /////////////////////////////
 ///////////////////////////// Rotas para fo /////////////////////////////
 
 // Cadastrar fo
-app.post('/fo', (req, res) => {
-
+app.post("/fo", (req, res) => {
     const { turma, data, tipo_fato, obs, monitor } = req.body;
 
     if (!data || !turma || !tipo_fato || !monitor) {
-        return res.status(400).send('Data,turma,fo e monitor são obrigatórios.');
+        return res
+            .status(400)
+            .send("Data,turma,fo e monitor são obrigatórios.");
     }
 
     const query = `INSERT INTO fo (  turma, data, tipo_fato, obs, monitor ) VALUES (?,?,?,?,?)
 `;
-    db.run(query, [  turma, data, tipo_fato, obs, monitor ], function (err) {
+    db.run(query, [turma, data, tipo_fato, obs, monitor], function (err) {
         if (err) {
-            return res.status(500).send('Erro ao cadastrar fo..');
+            return res.status(500).send("Erro ao cadastrar fo..");
         }
-        res.status(201).send({ id: this.lastID, message: 'FO cadastrado com sucesso.' });
+        res.status(201).send({
+            id: this.lastID,
+            message: "FO cadastrado com sucesso.",
+        });
     });
 });
 
 // Listar fo
 // Endpoint para listar todos os fo ou buscar por turma
-app.get('/fo', (req, res) => {
-    const data = req.query.data || '';  // Recebe a data da query string (se houver)
+app.get("/fo", (req, res) => {
+    const data = req.query.data || ""; // Recebe a data da query string (se houver)
 
     if (data) {
         // Se data foi passado, busca fo que possuam esse data ou parte dele
@@ -314,9 +351,9 @@ app.get('/fo', (req, res) => {
         db.all(query, [`%${data}%`], (err, rows) => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ message: 'Erro ao buscar fo.' });
+                return res.status(500).json({ message: "Erro ao buscar fo." });
             }
-            res.json(rows);  // Retorna os alunos encontrados ou um array vazio
+            res.json(rows); // Retorna os alunos encontrados ou um array vazio
         });
     } else {
         // Se a data não foi passada, retorna todos os fo
@@ -325,61 +362,107 @@ app.get('/fo', (req, res) => {
         db.all(query, (err, rows) => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ message: 'Erro ao buscar fo.' });
+                return res.status(500).json({ message: "Erro ao buscar fo." });
             }
-            res.json(rows);  // Retorna todos os fo
+            res.json(rows); // Retorna todos os fo
         });
     }
 });
 
-
-
 // Atualizar fo
-app.put('/fo/turma/:turma', (req, res) => {
+app.put("/fo/turma/:turma", (req, res) => {
     const { turma } = req.params;
-    const {  data, tipo_fato, obs, monitor} = req.body;
+    const { data, tipo_fato, obs, monitor } = req.body;
 
     const query = `UPDATE fo SET turma = ?, data = ?, tipo_fato = ?, obs = ?, monitor = ?  `;
-    db.run(query, [ turma, data, tipo_fato, obs, monitor], function (err) {
+    db.run(query, [turma, data, tipo_fato, obs, monitor], function (err) {
         if (err) {
-            return res.status(500).send('Erro ao atualizar fo.');
+            return res.status(500).send("Erro ao atualizar fo.");
         }
         if (this.changes === 0) {
-            return res.status(404).send('fo não encontrado.');
+            return res.status(404).send("fo não encontrado.");
         }
-        res.send('fo atualizado com sucesso.');
+        res.send("fo atualizado com sucesso.");
     });
 });
-
-
 
 ///////////////////////////// Rotas para funcionario /////////////////////////////
 ///////////////////////////// Rotas para funcionario /////////////////////////////
 ///////////////////////////// Rotas para funcionario /////////////////////////////
 
 // Cadastrar funcionario
-app.post('/funcionario', (req, res) => {
-
-    const { nome, data_de_nascimento, cpf, rg, genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cargo, carga_horaria, contrato } = req.body;
+app.post("/funcionario", (req, res) => {
+    const {
+        nome,
+        data_de_nascimento,
+        cpf,
+        rg,
+        genero,
+        estado_civil,
+        email,
+        email_institucional,
+        telefone,
+        telefone_alternativo,
+        cep,
+        logradouro,
+        numero,
+        complemento,
+        bairro,
+        cidade,
+        estado,
+        data_adimissão,
+        cargo,
+        carga_horaria,
+        contrato,
+    } = req.body;
 
     if (!nome || !cpf) {
-        return res.status(400).send('Nome e CPF são obrigatórios.');
+        return res.status(400).send("Nome e CPF são obrigatórios.");
     }
 
     const query = `INSERT INTO funcionario (  nome, data_de_nascimento, cpf, rg, genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cargo, carga_horaria, contrato ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 `;
-    db.run(query, [  nome, data_de_nascimento, cpf, rg, genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cargo, carga_horaria, contrato ], function (err) {
-        if (err) {
-            return res.status(500).send('Erro ao cadastrar funcionario..');
-        }
-        res.status(201).send({ id: this.lastID, message: 'Funcionario cadastrado com sucesso.' });
-    });
+    db.run(
+        query,
+        [
+            nome,
+            data_de_nascimento,
+            cpf,
+            rg,
+            genero,
+            estado_civil,
+            email,
+            email_institucional,
+            telefone,
+            telefone_alternativo,
+            cep,
+            logradouro,
+            numero,
+            complemento,
+            bairro,
+            cidade,
+            estado,
+            data_adimissão,
+            cargo,
+            carga_horaria,
+            contrato,
+        ],
+        function (err) {
+            if (err) {
+                return res.status(500).send("Erro ao cadastrar funcionario..");
+            }
+            res.status(201).send({
+                id: this.lastID,
+                message: "Funcionario cadastrado com sucesso.",
+            });
+        },
+    );
 });
 
 // Listar funcionario
 // Endpoint para listar todos os funcionario ou buscar por CPF
-app.get('/funcionario', (req, res) => {
-    const cpf = req.query.cpf || '';  // Recebe o CPF da query string (se houver)
+app.get("/funcionario", (req, res) => {
+    const cpf = req.query.cpf || ""; // Recebe o CPF da query string (se houver)
 
     if (cpf) {
         // Se CPF foi passado, busca funcionario que possuam esse CPF ou parte dele
@@ -388,9 +471,11 @@ app.get('/funcionario', (req, res) => {
         db.all(query, [`%${cpf}%`], (err, rows) => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ message: 'Erro ao buscar funcionario.' });
+                return res
+                    .status(500)
+                    .json({ message: "Erro ao buscar funcionario." });
             }
-            res.json(rows);  // Retorna os clientes encontrados ou um array vazio
+            res.json(rows); // Retorna os clientes encontrados ou um array vazio
         });
     } else {
         // Se CPF não foi passado, retorna todos os funcionario
@@ -399,66 +484,160 @@ app.get('/funcionario', (req, res) => {
         db.all(query, (err, rows) => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ message: 'Erro ao buscar funcionario.' });
+                return res
+                    .status(500)
+                    .json({ message: "Erro ao buscar funcionario." });
             }
-            res.json(rows);  // Retorna todos os funcionario
+            res.json(rows); // Retorna todos os funcionario
         });
     }
 });
 
-
-
 // Atualizar funcionario
-app.put('/funcionario/cpf/:cpf', (req, res) => {
+app.put("/funcionario/cpf/:cpf", (req, res) => {
     const { cpf } = req.params;
-    const {  nome, data_de_nascimento, rg,genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cargo, carga_horaria, contrato} = req.body;
+    const {
+        nome,
+        data_de_nascimento,
+        rg,
+        genero,
+        estado_civil,
+        email,
+        email_institucional,
+        telefone,
+        telefone_alternativo,
+        cep,
+        logradouro,
+        numero,
+        complemento,
+        bairro,
+        cidade,
+        estado,
+        data_adimissão,
+        cargo,
+        carga_horaria,
+        contrato,
+    } = req.body;
 
     const query = `UPDATE funcionario SET nome = ?, data_de_nascimento = ?, cpf = ?, rg = ?, genero = ?, estado_civil = ?, email = ?, email_institucional = ?, telefone = ?, telefone_alternativo = ?, cep = ?, logradouro = ?, numero = ?, complemento = ?, bairro = ?, cidade = ?, estado = ?, data_adimissão = ?, cargo = ?, carga_horaria = ?, contrato = ?`;
-    db.run(query, [ nome, data_de_nascimento, cpf, rg, genero, estado_civil, email, email_institucional, telefone, telefone_alternativo, cep, logradouro, numero, complemento , bairro, cidade, estado, data_adimissão, cargo, carga_horaria, contrato ], function (err) {
-        if (err) {
-            return res.status(500).send('Erro ao atualizar funcionario.');
-        }
-        if (this.changes === 0) {
-            return res.status(404).send('funcionario não encontrado.');
-        }
-        res.send('funcionario atualizado com sucesso.');
-    });
+    db.run(
+        query,
+        [
+            nome,
+            data_de_nascimento,
+            cpf,
+            rg,
+            genero,
+            estado_civil,
+            email,
+            email_institucional,
+            telefone,
+            telefone_alternativo,
+            cep,
+            logradouro,
+            numero,
+            complemento,
+            bairro,
+            cidade,
+            estado,
+            data_adimissão,
+            cargo,
+            carga_horaria,
+            contrato,
+        ],
+        function (err) {
+            if (err) {
+                return res.status(500).send("Erro ao atualizar funcionario.");
+            }
+            if (this.changes === 0) {
+                return res.status(404).send("funcionario não encontrado.");
+            }
+            res.send("funcionario atualizado com sucesso.");
+        },
+    );
 });
 
-
-
-
-
 ///////////////////////////// Rotas para aluno /////////////////////////////
 ///////////////////////////// Rotas para aluno /////////////////////////////
 ///////////////////////////// Rotas para aluno /////////////////////////////
-
-
 
 // Cadastrar aluno
-app.post('/aluno', (req, res) => {
-
-    const {  nome,telefone, email, cpf, rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado, cgm, curso, turma, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel,   email_responsavel } = req.body;
+app.post("/aluno", (req, res) => {
+    const {
+        nome,
+        telefone,
+        email,
+        cpf,
+        rg,
+        genero,
+        data_de_nascimento,
+        cep,
+        logradouro,
+        numero,
+        complemento,
+        cidade,
+        bairro,
+        estado,
+        cgm,
+        curso,
+        turma,
+        turno,
+        nome_responsavel,
+        telefone_responsavel,
+        parentesco_responsavel,
+        cpf_responsavel,
+        email_responsavel,
+    } = req.body;
 
     if (!nome || !cpf) {
-        return res.status(400).send('Nome e CPF são obrigatórios.');
+        return res.status(400).send("Nome e CPF são obrigatórios.");
     }
 
     const query = `INSERT INTO aluno ( nome,telefone, email, cpf, rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado, cgm, curso, turma, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel,   email_responsavel) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 `;
-    db.run(query, [ nome,telefone, email, cpf, rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado, cgm, curso, turma, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel, email_responsavel ], function (err) {
-        if (err) {
-            return res.status(500).send('Erro ao cadastrar aluno..');
-        }
-        res.status(201).send({ id: this.lastID, message: 'Aluno cadastrado com sucesso.' });
-    });
+    db.run(
+        query,
+        [
+            nome,
+            telefone,
+            email,
+            cpf,
+            rg,
+            genero,
+            data_de_nascimento,
+            cep,
+            logradouro,
+            numero,
+            complemento,
+            cidade,
+            bairro,
+            estado,
+            cgm,
+            curso,
+            turma,
+            turno,
+            nome_responsavel,
+            telefone_responsavel,
+            parentesco_responsavel,
+            cpf_responsavel,
+            email_responsavel,
+        ],
+        function (err) {
+            if (err) {
+                return res.status(500).send("Erro ao cadastrar aluno..");
+            }
+            res.status(201).send({
+                id: this.lastID,
+                message: "Aluno cadastrado com sucesso.",
+            });
+        },
+    );
 });
 
 // Listar aluno
 // Endpoint para listar todos os alunos ou buscar por CGM
-app.get('/alunos', (req, res) => {
-    
-    const cgm = req.query.cgm || '';  // Recebe o CGM da query string (se houver)
+app.get("/alunos", (req, res) => {
+    const cgm = req.query.cgm || ""; // Recebe o CGM da query string (se houver)
     console.log("ok");
     if (cgm) {
         // Se CPF foi passado, busca funcionario que possuam esse Cgm ou parte dele
@@ -467,9 +646,11 @@ app.get('/alunos', (req, res) => {
         db.all(query, [`%${cgm}%`], (err, rows) => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ message: 'Erro ao buscar aluno.' });
+                return res
+                    .status(500)
+                    .json({ message: "Erro ao buscar aluno." });
             }
-            res.json(rows);  // Retorna os alunos encontrados ou um array vazio
+            res.json(rows); // Retorna os alunos encontrados ou um array vazio
         });
     } else {
         // Se Cgm não foi passado, retorna todos os aluno
@@ -478,39 +659,86 @@ app.get('/alunos', (req, res) => {
         db.all(query, (err, rows) => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ message: 'Erro ao buscar aluno.' });
+                return res
+                    .status(500)
+                    .json({ message: "Erro ao buscar aluno." });
             }
-            res.json(rows);  // Retorna todos os aluno
+            res.json(rows); // Retorna todos os aluno
         });
     }
 });
 
-
-
 // Atualizar aluno
-app.put('/aluno/cgm/:cgm', (req, res) => {
+app.put("/aluno/cgm/:cgm", (req, res) => {
     const { cgm } = req.params;
-    const {  nome,telefone, email,cpf ,rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado,  curso, turma, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel,   email_responsavel
-
+    const {
+        nome,
+        telefone,
+        email,
+        cpf,
+        rg,
+        genero,
+        data_de_nascimento,
+        cep,
+        logradouro,
+        numero,
+        complemento,
+        cidade,
+        bairro,
+        estado,
+        curso,
+        turma,
+        turno,
+        nome_responsavel,
+        telefone_responsavel,
+        parentesco_responsavel,
+        cpf_responsavel,
+        email_responsavel,
     } = req.body;
 
     const query = `UPDATE aluno SET nome = ?,telefone = ?, email = ?, cpf = ?, rg = ?, genero = ? , data_de_nascimento = ? , cep = ? , logradouro = ? , numero = ? , complemento = ? , cidade = ? , bairro = ? , estado = ? , cgm = ? , curso = ? , turma = ? , turno = ? , nome_responsavel = ? , telefone_responsavel = ? , parentesco_responsavel = ? , cpf_responsavel = ? ,   email_responsavel = ? `;
-    db.run(query, [ nome,telefone, email, cpf, rg, genero, data_de_nascimento, cep, logradouro, numero, complemento, cidade, bairro, estado, cgm, curso, periodo, turno, nome_responsavel, telefone_responsavel, parentesco_responsavel, cpf_responsavel,   email_responsavel
-
-    ], function (err) {
-        if (err) {
-            return res.status(500).send('Erro ao atualizar aluno.');
-        }
-        if (this.changes === 0) {
-            return res.status(404).send('Aluno não encontrado.');
-        }
-        res.send('Aluno atualizado com sucesso.');
-    });
+    db.run(
+        query,
+        [
+            nome,
+            telefone,
+            email,
+            cpf,
+            rg,
+            genero,
+            data_de_nascimento,
+            cep,
+            logradouro,
+            numero,
+            complemento,
+            cidade,
+            bairro,
+            estado,
+            cgm,
+            curso,
+            periodo,
+            turno,
+            nome_responsavel,
+            telefone_responsavel,
+            parentesco_responsavel,
+            cpf_responsavel,
+            email_responsavel,
+        ],
+        function (err) {
+            if (err) {
+                return res.status(500).send("Erro ao atualizar aluno.");
+            }
+            if (this.changes === 0) {
+                return res.status(404).send("Aluno não encontrado.");
+            }
+            res.send("Aluno atualizado com sucesso.");
+        },
+    );
 });
 
 // Teste para verificar se o servidor está rodando
-app.get('/', (req, res) => {
-    res.send('Servidor está rodando e tabelas criadas!');
+app.get("/", (req, res) => {
+    res.send("Servidor está rodando e tabelas criadas!");
 });
 
 // Iniciando o servidor
