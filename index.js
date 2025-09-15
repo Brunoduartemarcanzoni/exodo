@@ -119,6 +119,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
                 providencia TEXT,
                 dia DATE not NULL,
                 turma integer,
+                prazo DATE,
                 cgm INTEGER,
                 obs integer,
                 funcionario VARCHAR(14),
@@ -143,11 +144,11 @@ app.post('/encaminhamento', (req, res) => {
 
     const {tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario,Prazo ,justificativa, turma,} = req.body;
 
-    if (!tipo_fo || !prazo|| !turma) {
-        return res.status(400).send('Fato_id, data e turma são obrigatórios.');
+    if (!tipo_fo || !dia|| !turma) {
+        return res.status(400).send('fo, prazo e turma são obrigatórios.');
     }
 
-    const query = `INSERT INTO encaminhamento (tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario, Prazo justificativa, turma ) VALUES (?,?,?,?,?)
+    const query = `INSERT INTO encaminhamento (tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario, Prazo, justificativa, turma ) VALUES (?,?,?,?,?,?,?,?,?,?,?)
 `;
     db.run(query, [tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario,Prazo ,justificativa, turma ], function (err) {
         if (err) {
@@ -160,13 +161,13 @@ app.post('/encaminhamento', (req, res) => {
 // Listar encaminhamento
 // Endpoint para listar todos os encaminhamento ou buscar por turma
 app.get('/encaminhamento', (req, res) => {
-    const prazo = req.query.prazo || '';  // Recebe a data da query string (se houver)
+    const dia = req.query.dia || '';  // Recebe a data da query string (se houver)
 
     if (dia) {
         // Se data foi passado, busca encaminhamento que possuam esse CPF ou parte dele
         const query = `SELECT * FROM encaminhamento WHERE data LIKE ?`;
 
-        db.all(query, [`%${prazo}%`], (err, rows) => {
+        db.all(query, [`%${dia}%`], (err, rows) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ message: 'Erro ao buscar ata.' });
@@ -194,7 +195,7 @@ app.put('/encaminhamento/turma/:turma', (req, res) => {
     const { turma } = req.params;
     const {  tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario,Prazo ,justificativa  } = req.body;
 
-    const query = `UPDATE funcionario SET fato_id ?, cpf_funcionario ?, data ?, horario ?, cgm_aluno ?, obs, turma ?`;
+    const query = `UPDATE funcionario SET fato_id = ?, cpf_funcionario = ?, data = ?, horario = ?, cgm_aluno = ?, obs =?, turma = ?`;
     db.run(query, [tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario,Prazo ,justificativa, turma ], function (err) {
         if (err) {
             return res.status(500).send('Erro ao atualizar encaminhamento.');
@@ -202,7 +203,7 @@ app.put('/encaminhamento/turma/:turma', (req, res) => {
         if (this.changes === 0) {
             return res.status(404).send('encaminhamento não encontrado.');
         }
-        res.send('fo atualizado com sucesso.');
+        res.send('encaminhamento atualizado com sucesso.');
     });
 });
 
@@ -259,8 +260,6 @@ app.get('/ata', (req, res) => {
         });
     }
 });
-
-
 
 // Atualizar ata
 app.put('/ata/turma/:turma', (req, res) => {

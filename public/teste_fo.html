@@ -140,8 +140,8 @@
                         <form id="searchForm">
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label class="required" for="aluno-periodo">Turma</label>
-                                <select id="aluno-turma" name="periodo" required>
+                                <label class="required" for="aluno-turma">Turma</label>
+                                <select id="aluno-turma" name="turma" required>
                                     <option value="">Selecione</option>
                                     <option value="9º Ano A">9º Ano A</option>
                                     <option value="9º Ano B">9º Ano B</option>
@@ -322,7 +322,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label> for="filtroTipo">Filtrar por Tipo:</label>
+                               <label for="filtroTipo">Filtrar por Tipo:</label>
                                 <select id="filtroTipo" name="filtroTipo">
                                     <option value="">Todos os tipos</option>
                                     <option value="comportamento-positivo">Comportamento Positivo</option>
@@ -345,7 +345,6 @@
                             <button type="button" class="btn btn-primary" onclick="aplicarFiltros()">Aplicar Filtros</button>
                         </form>
                     </section>
-
                     <!-- Lista de F.O disponíveis para encaminhamento -->
                     <section class="form-section">
                         <h2>F.O Disponíveis para Encaminhamento 
@@ -575,6 +574,7 @@
                 ataDataInput.value = today;
             }
         });
+    
     </script>
 </body>
 </html>

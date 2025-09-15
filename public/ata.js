@@ -6,7 +6,7 @@ async function cadastrarata(event) {
         data: document.getElementById("ataData").value,
         assunto: document.getElementById("ataAssunto").value,
         conteudo: document.getElementById("ataConteudo").value,
-        encaminhamento: document.getElementById("ataEncaminhamento").value,
+        encaminhamento: document.getElementById("ataEncaminhamentos").value,
         participantes: document.getElementById("ataParticipantes").value,
 
     };
@@ -37,7 +37,7 @@ async function cadastrarata(event) {
 async function listarata() {
     const aluno = document.getElementById("ataAluno").value.trim();
     const participantes = document.getElementById("ataParticipantes").value.trim();
-    const encaminhamento = document.getElementById("ataEncaminhamento").value.trim();
+    const encaminhamento = document.getElementById("ataEncaminhamentos").value.trim();
     const assunto = document.getElementById("ataAssunto").value.trim();
     const data = document.getElementById("ataData").value.trim();
     const conteudo = document.getElementById("ataConteudo").value.trim();
