@@ -6,8 +6,8 @@ async function cadastrarata(event) {
         data: document.getElementById("ataData").value,
         assunto: document.getElementById("ataAssunto").value,
         conteudo: document.getElementById("ataConteudo").value,
-        encaminhamento: document.getElementById("ataEncaminhamentos").value,
-        participantes: document.getElementById("ataParticipantes").value
+        encaminhamento: document.getElementById("ataEncaminhamento").value,
+        participantes: document.getElementById("ataParticipantes").value,
 
     };
 
