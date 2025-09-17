@@ -3,12 +3,13 @@ async function cadastrarata(event) {
 
     const ata = {
         aluno: document.getElementById("ataAluno").value,
-        data: document.getElementById("ataData").value,
+        cgm: document.getElementById("ataAluno").value,
+        dia: document.getElementById("ataData").value,
         assunto: document.getElementById("ataAssunto").value,
         conteudo: document.getElementById("ataConteudo").value,
         encaminhamento: document.getElementById("ataEncaminhamentos").value,
-        participantes: document.getElementById("ataParticipantes").value,
-
+        monitor: document.getElementById("ataMonitor").value,
+        prof: document.getElementById("ataProfessor").value,
     };
 
     try {
@@ -36,17 +37,19 @@ async function cadastrarata(event) {
 // Função para listar todos os ata
 async function listarata() {
     const aluno = document.getElementById("ataAluno").value.trim();
-    const participantes = document.getElementById("ataParticipantes").value.trim();
+    const cgm = document.getElementById("ataAluno").value.trim();
+    const prof = document.getElementById("ataProfessor").value.trim();
+    const monitor = document.getElementById("ataMonitor").value.trim();
     const encaminhamento = document.getElementById("ataEncaminhamentos").value.trim();
     const assunto = document.getElementById("ataAssunto").value.trim();
-    const data = document.getElementById("ataData").value.trim();
+    const dia = document.getElementById("ataData").value.trim();
     const conteudo = document.getElementById("ataConteudo").value.trim();
     
     let url = "/ata"; // URL padrão para todos os ata
 
-    if (aluno) {
+    if (cgm) {
         // Se aluno atai digitado, adiciona o parâmetro de consulta
-        url += `?aluno=${aluno}`;
+        url += `?cgm=${cgm}`;
     }
 
     try {
@@ -65,10 +68,12 @@ async function listarata() {
                 const linha = document.createElement("tr");
                 linha.innerHTML = `
                   <td>${ataItem.aluno}</td>
-                  <td>${ataItem.participantes}</td>
+                  <td>${ataItem.cgm}</td>
+                  <td>${ataItem.monitor}</td>
+                  <td>${ataItem.prof}</td>
                   <td>${ataItem.encaminhamento}</td>
                   <td>${ataItem.assunto}</td>
-                  <td>${ataItem.data}</td>
+                  <td>${ataItem.dia}</td>
                   <td>${ataItem.conteudo}</td>
               `;
                 tabela.appendChild(linha);
@@ -82,20 +87,25 @@ async function listarata() {
 // Função para atualizar as inatarmações do ata
 async function atualizarata() {
         const aluno = document.getElementById("ataAluno").value;
-        const data = document.getElementById("ataData").value;
+        const cgm = document.getElementById("ataAluno").value;
+        const dia = document.getElementById("ataData").value;
         const assunto = document.getElementById("ataAssunto").value;
         const conteudo = document.getElementById("ataConteudo").value;
-        const participantes = document.getElementById("ataParticipantes").value;
+        const monitor = document.getElementById("ataMonitor").value;
+        const prof = document.getElementById("ataProfessor").value;
         
     const ataAtualizado = {
         aluno,
-        data,
+        cgm,
+        dia,
         conteudo,
-        participantes
+        assunto,
+        prof,
+        monitor
     };
 
     try {
-        const respo = await fetch(`/ata/aluno/${aluno}`, {
+        const respo = await fetch(`/ata/cgm/${cgm}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

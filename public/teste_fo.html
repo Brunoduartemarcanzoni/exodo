@@ -249,11 +249,16 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="ataParticipantes">Participantes:</label>
-                                <textarea id="ataParticipantes" name="ataParticipantes" 
+                                <label for="ataParticipantes">monitor:</label>
+                                <textarea id="ataMonitor" name="ataParticipantes" 
                                     placeholder="Liste os participantes da reunião..." required></textarea>
                             </div>
 
+                            <div class="form-group">
+                                <label for="ataParticipantes">prof/funcionario:</label>
+                                <textarea id="ataProfessor" name="ataParticipantes" 
+                                    placeholder="Liste os participantes da reunião..." required></textarea>
+                            </div>
                             <div class="form-group">
                                 <label for="ataConteudo">Conteúdo da Ata:</label>
                                 <textarea id="ataConteudo" name="ataConteudo" 
@@ -277,26 +282,22 @@
 
                     <!-- Lista de atas existentes -->
                     <section class="form-section">
-                    <div class="student-info" id="studentInfo">
-                        <button type="button" onclick="listarAlunos()" class="alinhaBtns">Listar aluno</button>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Nome</th>
-                                        <th>CGM</th>
-                                        <th>CPF</th>
-                                        <th>Email</th>
-                                        <th>Turma</th>
-                                        <th>Telefone Responsavel</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Linhas de dados aqui -->
-                                </tbody>
-                            </table>
-                </div>
-            </section>
-
+                     <div class="student-info" id="studentInfo">
+                      <button type="button" onclick="listarAlunos()" class="alinhaBtns">Listar aluno</button>
+                      <table>
+                         <thead>
+                           <tr>
+                             <th>Nome</th>
+                             <th>CGM</th>
+                             <th>CPF</th>
+                             <th>Email</th>
+                             <th>Turma</th>
+                             <th>Telefone Responsável</th>
+                         </tr>
+                      </thead>
+                      <tbody>
+                        <!-- listagem -->
+                      </tbody>
                <div id="encaminhamento" class="tab-content">
                     <div class="encaminhar-info">
                         <h3>Encaminhamento de Fatos Observados</h3>
