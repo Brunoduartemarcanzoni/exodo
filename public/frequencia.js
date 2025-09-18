@@ -42,14 +42,17 @@ async function listarfrequencia() {
         const turma = document.getElementById('filtroTurma').value.trim();
         const ausencias = document.getElementById('ausencias').value.trim();
         const presencas = document.getElementById('prazoResposta').value.trim();
+        const total_aulas = document.getElementById('prioridade').value.trim();
+        const data_aula = document.getElementById('date').value.trim ();
+        const cgm = document.getElementById('filtroTurma').value.trim ();
         const justificativa = document.getElementById('justificativa').value.trim();
         const aluno_nome = document.getElementById('prioridade').value.trim(); 
 
     let url = '/frequencia';  // URL padrão para todos os funcionario
 
-    if (aluno_nome) {
+    if (cgm) {
         // Se turma foi digitado, adiciona o parâmetro de consulta
-        url += `?aluno_nome=${aluno_nome}`;
+        url += `?aluno_nome=${cgm}`;
     }
 
     try {
@@ -70,7 +73,12 @@ async function listarfrequencia() {
                     <td>${frequenciaItem.justificativa}</td>
                     <td>${frequenciaItem.ausencias}</td>
                     <td>${frequenciaItem.total_aulas}</td>
+                    <td>${frequenciaItem.data_aula}</td>
+                    <td>${frequenciaItem.cgm }</td>
+                    <td>${frequenciaItem.aluno_nome}</td>
+                    <td>${frequenciaItem.presencas}</td>
                     <td>${frequenciaItem.porcentagem }</td>
+
                 `;
                 tabela.appendChild(linha);
             });
@@ -82,17 +90,22 @@ async function listarfrequencia() {
 
 // Função para atualizar as informações do frequencia
 async function atualizarfrequencia() {
-    const turma = document.getElementById('filtroTurma').value.trim();
-    const ausencias = document.getElementById('ausencias').value.trim();
-    const presencas = document.getElementById('prazoResposta').value.trim();
-    const justificativa = document.getElementById('justificativa').value.trim();
-    const aluno_nome = document.getElementById('prioridade').value.trim();
-    const porcentagem = document.getElementById('content3').value.trim();
+   const turma = document.getElementById('filtroTurma').value.trim();
+        const ausencias = document.getElementById('ausencias').value.trim();
+        const presencas = document.getElementById('prazoResposta').value.trim();
+        const total_aulas = document.getElementById('prioridade').value.trim();
+        const data_aula = document.getElementById('date').value.trim ();
+        const cgm = document.getElementById('filtroTurma').value.trim ();
+        const justificativa = document.getElementById('justificativa').value.trim();
+        const aluno_nome = document.getElementById('prioridade').value.trim(); 
 
     const frequenciaAtualizado = {
         turma,
         aluno_nome,
         justificativa,
+        total_aulas,
+        data_aula,
+        cgm,
         ausencias,
         presencas,
         porcentagem
@@ -100,7 +113,7 @@ async function atualizarfrequencia() {
     };
 
     try {
-        const respo = await fetch(`/frequencia/aluno_nome/${aluno_nome}`, {
+        const respo = await fetch(`/frequencia/cgm/${cgm}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
