@@ -30,7 +30,7 @@ async function cadastrarata(event) {
         }
     } catch (err) {
         console.error("Erro na solicitação:", err);
-        alert("Erro ao cadastrar");
+        alert("Erro ao cadastrar ata");
     }
 }
 

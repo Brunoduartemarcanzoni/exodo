@@ -102,9 +102,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
                 conteudo varchar,
                 encaminhamento varchar,
                 cgm varchar not null UNIQUE,
-                turma varchar not null,
-                prof varchar,
-                fato varchar not null
+                prof varchar
     );
         
     `);
@@ -215,15 +213,15 @@ app.put('/encaminhamento/turma/:turma', (req, res) => {
 // Cadastrar ata
 app.post('/ata', (req, res) => {
 
-    const {aluno , dia , assunto, monitor, conteudo, encaminhamento , cgm , turma, prof, fato } = req.body;
+    const { aluno, dia, assunto, monitor, conteudo, encaminhamento, cgm, prof } = req.body;
 
     if (!prof || !monitor || !aluno || !assunto) {
         return res.status(400).send('Prof, monitor, aluno e assunto são obrigatórios.');
     }
 
-    const query = `INSERT INTO ata( aluno , dia , assunto, monitor, conteudo, encaminhamento , cgm , turma, prof, fato) VALUES (?,?,?,?,?,?,?,?,?,?)
+    const query = `INSERT INTO ata(aluno, dia, assunto, monitor, conteudo, encaminhamento, cgm, prof) VALUES (?,?,?,?,?,?,?,?)
 `;
-    db.run(query, [aluno , dia , assunto, monitor, conteudo, encaminhamento , cgm , turma, prof, fato], function (err) {
+    db.run(query, [aluno, dia, assunto, monitor, conteudo, encaminhamento, cgm, prof], function (err) {
         if (err) {
             return res.status(500).send('Erro ao cadastrar ata..');
         }
