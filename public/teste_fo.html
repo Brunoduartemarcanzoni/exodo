@@ -356,7 +356,7 @@
                     </section>
     
                     <!-- Lista de F.O disponíveis para encaminhamento -->
-                    <section class="form-section">
+                    <!-- <section class="form-section">
                         <h2>F.O Disponíveis para Encaminhamento 
                             <span class="selected-fo-count" id="selectedCount">0 selecionados</span>
                         </h2>
@@ -407,7 +407,7 @@
                                 <div class="fo-observacao">Não participa das atividades e demonstra sinais de desinteresse constante...</div>
                             </div>
                         </div>
-                    </section>
+                    </section> -->
     
                     <!-- Formulário de encaminhamento -->
                     <section class="form-section">
@@ -419,6 +419,11 @@
                                 <div id="foSummary">
                                     <p>Nenhum F.O selecionado ainda. Clique nos itens acima para selecioná-los.</p>
                                 </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="ataData">Data de registro:</label>
+                                <input type="date" id="encData" name="ataData" required>
                             </div>
     
                             <div class="form-group">
@@ -443,10 +448,23 @@
                             <div class="form-group">
                                 <label for="prioridade">Prioridade:</label>
                                 <select id="prioridade" name="prioridade" required>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ataAssunto">obs:</label>
+                                <input type="text" id="obs" name="ataAssunto"  required>
+                            </div>
+    
+                                <div class="buttons-container">
+                                    <button type="button" class="btn btn-secondary">Voltar</button>
+                                    <button type="reset" class="btn btn-danger">Limpar</button>
+                                    <button type="submit" class="btn btn-success" onclick="cadastrarencaminhamento(event)">Registrar Encaminhamento</button>
+                                </div>
                                    
 
     <!-- Rodapé -->
-    <footer class="footer"></footer>
+    <!-- <footer class="footer"></footer> -->
 
     <script>
         // Sistema de Abas

@@ -4,8 +4,8 @@ async function cadastrarencaminhamento(event) {
     const encaminhamento= {
         turma : document.getElementById('filtroTurma').value,
         destino: document.getElementById('destino'),
-        dia: document.getElementById('').value,
-        obs:document.getElementById('').value,
+        dia: document.getElementById('encData').value,
+        obs:document.getElementById('obs').value,
         prazo: document.getElementById('prazoResposta').value,
         tipo_fo:document.getElementById('filtroTipo').value,
         prioridade: document.getElementById('prioridade').value,
@@ -45,6 +45,7 @@ async function listarencaminhamento() {
     const tipo_fo =document.getElementById('filtroTipo').value.trim();
     const providencia = document.getElementById('acoesSugeridas').value.trim();
     const prazo  = document.getElementById('prazoResposta').value.trim();
+    const dia = document.getElementById('encData').value.trim();
 
     let url = '/encaminhamento';  // URL padrão para todos os funcionario
 
@@ -75,6 +76,8 @@ async function listarencaminhamento() {
                     <td>${encaminhamentoItem.justificativa}</td>
                     <td>${encaminhamentoItem.providencia}</td>
                     <td>${encaminhamentoItem.responsavel}</td>
+                    <td>${encaminhamentoItem.dia}</td>
+                    <td>${encaminhamentoItem.obs}</td>
                     <td>${encaminhamentoItem.funcionario}</td>
                 `;
                 tabela.appendChild(linha);
@@ -100,7 +103,7 @@ async function atualizarencaminhamento() {
         tipo_fato,
         providencia,
         prazo,
-       justificativa 
+       justificativa
           
     };
 
