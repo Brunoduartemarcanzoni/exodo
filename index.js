@@ -140,13 +140,13 @@ const db = new sqlite3.Database('./database.db', (err) => {
 // Cadastrar encaminhamento
 app.post('/encaminhamento', (req, res) => {
 
-    const {tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario,Prazo ,justificativa, turma,} = req.body;
+    const {tipo_fo, destino,dia,obs,providencia,responsavel,funcionario,Prazo ,justificativa, turma,} = req.body;
 
     if (!tipo_fo || !dia|| !turma) {
         return res.status(400).send('fo, prazo e turma são obrigatórios.');
     }
 
-    const query = `INSERT INTO encaminhamento (tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario, Prazo, justificativa, turma ) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+    const query = `INSERT INTO encaminhamento (tipo_fo, destino,dia,obs,providencia,responsavel,funcionario, Prazo, justificativa, turma ) VALUES (?,?,?,?,?,?,?,?,?,?)
 `;
     db.run(query, [tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario,Prazo ,justificativa, turma ], function (err) {
         if (err) {
@@ -191,10 +191,10 @@ app.get('/encaminhamento', (req, res) => {
 // Atualizar encaminhamento
 app.put('/encaminhamento/turma/:turma', (req, res) => {
     const { turma } = req.params;
-    const {  tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario,Prazo ,justificativa  } = req.body;
+    const {  tipo_fo, destino,dia,obs,providencia,responsavel,funcionario,Prazo ,justificativa  } = req.body;
 
     const query = `UPDATE funcionario SET fato_id = ?, cpf_funcionario = ?, data = ?, horario = ?, cgm_aluno = ?, obs =?, turma = ?`;
-    db.run(query, [tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario,Prazo ,justificativa, turma ], function (err) {
+    db.run(query, [tipo_fo, destino,dia,obs,providencia,responsavel,funcionario,Prazo ,justificativa, turma ], function (err) {
         if (err) {
             return res.status(500).send('Erro ao atualizar encaminhamento.');
         }

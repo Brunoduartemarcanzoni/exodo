@@ -1,5 +1,7 @@
+alert('1');
 async function cadastrarencaminhamento(event) {
     event.preventDefault();
+  
 
     const encaminhamento= {
         turma : document.getElementById('filtroTurma').value,
@@ -8,13 +10,12 @@ async function cadastrarencaminhamento(event) {
         obs:document.getElementById('obs').value,
         prazo: document.getElementById('prazoResposta').value,
         tipo_fo:document.getElementById('filtroTipo').value,
-        prioridade: document.getElementById('prioridade').value,
         justificativa: document.getElementById('justifictiva').value,
         providencia: document.getElementById('acoesSugeridas').value,
         responsavel: document.getElementById('responsavelEncaminhamento').value,
         funcionario: document.getElementById('destinatario').value,
     };
-       
+       alert('2');
     try {
 
         const response = await fetch('/encaminhamento', {
@@ -24,7 +25,8 @@ async function cadastrarencaminhamento(event) {
             },
             body: JSON.stringify(encaminhamento)
         });
-
+        alert('3');
+        
         const result = await response.json();
         if (response.ok) {
             alert('encaminhamento cadastrado com sucesso!');
@@ -36,16 +38,19 @@ async function cadastrarencaminhamento(event) {
         console.error('Erro na solicitação:', err);
         alert('Erro ao cadastrar cliente.');
     }
+    alert('4');
 }
-
+alert('5');
 // Função para listar todos os encaminhamentos 
 async function listarencaminhamento() {
     const  turma  = document.getElementById('filtroTurma').value.trim();
-    const  destino = document.getElementById('destino').value.trim();
-    const tipo_fo =document.getElementById('filtroTipo').value.trim();
-    const providencia = document.getElementById('acoesSugeridas').value.trim();
-    const prazo  = document.getElementById('prazoResposta').value.trim();
-    const dia = document.getElementById('encData').value.trim();
+    // const  destino = document.getElementById('destino').value.trim();
+    // const tipo_fo =document.getElementById('filtroTipo').value.trim();
+    // const providencia = document.getElementById('acoesSugeridas').value.trim();
+    // const prazo  = document.getElementById('prazoResposta').value.trim();
+    // const dia = document.getElementById('encData').value.trim();
+    alert('6');
+    
 
     let url = '/encaminhamento';  // URL padrão para todos os funcionario
 
@@ -72,7 +77,6 @@ async function listarencaminhamento() {
                     <td>${encaminhamentoItem.destino}</td>
                     <td>${encaminhamentoItem.prazo}</td>
                     <td>${encaminhamentoItem.tipo_fo}</td>
-                    <td>${encaminhamentoItem.prioridade}</td>
                     <td>${encaminhamentoItem.justificativa}</td>
                     <td>${encaminhamentoItem.providencia}</td>
                     <td>${encaminhamentoItem.responsavel}</td>
