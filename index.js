@@ -112,17 +112,11 @@ const db = new sqlite3.Database('./database.db', (err) => {
     db.run(`
         CREATE TABLE IF NOT EXISTS encaminhamento (
                 id_encaminhamento INTEGER PRIMARY KEY AUTOINCREMENT,
-                tipo_fo TEXT not NULL ,
-                justificativa TEXT not NULL,
-                providencia TEXT,
-                dia DATE not NULL,
-                turma integer,
-                prazo DATE,
-                cgm INTEGER,
-                obs integer,
-                funcionario VARCHAR(14),
-                FOREIGN KEY (cgm) REFERENCES aluno(cgm),
-                FOREIGN KEY (funcionario) REFERENCES funcionario (cpf)
+                data DATE,
+                destino TEXT,
+                destinatario TEXT,
+                obs TEXT,
+                aluno TEXT
     );
 
     `);
@@ -140,15 +134,15 @@ const db = new sqlite3.Database('./database.db', (err) => {
 // Cadastrar encaminhamento
 app.post('/encaminhamento', (req, res) => {
 
-    const {tipo_fo, destino,dia,obs,providencia,responsavel,funcionario,Prazo ,justificativa, turma,} = req.body;
+    const {data, destino, destinatario, obs} = req.body;
 
-    if (!tipo_fo || !dia|| !turma) {
-        return res.status(400).send('fo, prazo e turma são obrigatórios.');
+    if (!destinatario || !data) {
+        return res.status(400).send('Destinatario e data são obrigatórios.');
     }
 
-    const query = `INSERT INTO encaminhamento (tipo_fo, destino,dia,obs,providencia,responsavel,funcionario, Prazo, justificativa, turma ) VALUES (?,?,?,?,?,?,?,?,?,?)
+    const query = `INSERT INTO encaminhamento (data, destino, destinatario, obs) VALUES (?,?,?,?)
 `;
-    db.run(query, [tipo_fo, destino,dia,obs,prioridade,providencia,responsavel,funcionario,Prazo ,justificativa, turma ], function (err) {
+    db.run(query, [data, destino, destinatario, obs], function (err) {
         if (err) {
             return res.status(500).send('Erro ao cadastrar ata..');
         }
@@ -161,11 +155,11 @@ app.post('/encaminhamento', (req, res) => {
 app.get('/encaminhamento', (req, res) => {
     const dia = req.query.dia || '';  // Recebe a data da query string (se houver)
 
-    if (dia) {
+    if (data) {
         // Se data foi passado, busca encaminhamento que possuam esse CPF ou parte dele
         const query = `SELECT * FROM encaminhamento WHERE data LIKE ?`;
 
-        db.all(query, [`%${dia}%`], (err, rows) => {
+        db.all(query, [`%${data}%`], (err, rows) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ message: 'Erro ao buscar ata.' });

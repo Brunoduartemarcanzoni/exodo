@@ -316,12 +316,12 @@
     
                     <!-- Filtros para seleção de F.O -->
                     <section class="form-section">
-                        <h2>Filtros de F.O para Encaminhamento</h2>
+                        <h2>Selecionar Aluno</h2>
                         
                         <form id="filtrosEncaminhamento">
                             <div class="form-group">
-                                <label for="filtroTurma">Filtrar por Turma:</label>
-                                <select id="filtroTurma" name="filtroTurma">
+                                <label for="filtroTurma">Selecionar Aluno</label>
+                                <select id="aluno" name="filtroTurma">
                                     <option value="">Todas as turmas</option>
                                     <option value="1A">1º Ano A</option>
                                     <option value="1B">1º Ano B</option>
@@ -331,32 +331,6 @@
                                     <option value="3B">3º Ano B</option>
                                 </select>
                             </div>
-    
-                            <div class="form-group">
-                                <label for="filtroTipo">Filtrar por Tipo:</label>
-                                <select id="filtroTipo" name="filtroTipo">
-                                    <option value="">Todos os tipos</option>
-                                    <option value="comportamento-positivo">Comportamento Positivo</option>
-                                    <option value="comportamento-negativo">Comportamento Negativo</option>
-                                    <option value="desempenho-academico">Desempenho Acadêmico</option>
-                                    <option value="participacao-aula">Participação em Aula</option>
-                                    <option value="relacionamento-colegas">Relacionamento com Colegas</option>
-                                    <option value="outro">Outro</option>
-                                </select>
-                            </div>
-    
-                            <div class="form-group">
-                                <label for="filtroPeriodo">Período:</label>
-                                <div style="display: flex; gap: 10px;">
-                                    <input type="date" id="dataInicio" name="dataInicio" placeholder="Data início">
-                                    <input type="date" id="dataFim" name="dataFim" placeholder="Data fim">
-                                </div>
-                            </div>
-    
-                            <button type="button" class="btn btn-primary" onclick="aplicarFiltros()">Aplicar Filtros</button>
-                        </form>
-                    </section>
-    
                     <!-- Lista de F.O disponíveis para encaminhamento -->
                     <!-- <section class="form-section">
                         <h2>F.O Disponíveis para Encaminhamento 

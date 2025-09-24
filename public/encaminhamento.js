@@ -4,16 +4,12 @@ async function cadastrarencaminhamento(event) {
   
 
     const encaminhamento= {
-        turma : document.getElementById('filtroTurma').value,
+        aluno: document.getElementById('aluno').value,
+        destinatario : document.getElementById('destinatario').value,
         destino: document.getElementById('destino'),
         dia: document.getElementById('encData').value,
         obs:document.getElementById('obs').value,
-        prazo: document.getElementById('prazoResposta').value,
-        tipo_fo:document.getElementById('filtroTipo').value,
-        justificativa: document.getElementById('justifictiva').value,
-        providencia: document.getElementById('acoesSugeridas').value,
-        responsavel: document.getElementById('responsavelEncaminhamento').value,
-        funcionario: document.getElementById('destinatario').value,
+
     };
        alert('2');
     try {
@@ -30,7 +26,7 @@ async function cadastrarencaminhamento(event) {
         const result = await response.json();
         if (response.ok) {
             alert('encaminhamento cadastrado com sucesso!');
-            //document.getElementById('fo-form').reset();
+            //document.getElementById('encaminhamento-form').reset();
         } else {
             alert(`Erro: ${result.message}`);
         }
