@@ -211,13 +211,30 @@
                             </div>
     
                             <div class="buttons-container">
-                                <button type="button" class="btn btn-secondary">Voltar</button>
+                                <button type="button" class="btn btn-secondary"onclick= " listarfo()">listar</button>
                                 <button type="reset" class="btn btn-danger">Cancelar</button>
                                 <button type="submit" class="btn btn-primary" onclick="cadastrarfo(event)">Registrar F.O</button>
                             </div>
                         </form>
                     </section>
                 </div>
+                 <div>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>turma</th>
+                <th>data</th>
+                <th>monitor</th>
+                <th>f.o</th>
+                 <th>obs</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-fo">
+            <!-- Linhas serão preenchidas pelo JavaScript -->
+        </tbody>
+    </table>
+   </div>
     
                 <!-- Conteúdo da Aba: Atas -->
                 <div id="atas" class="tab-content">
