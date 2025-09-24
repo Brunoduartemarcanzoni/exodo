@@ -34,48 +34,46 @@ async function cadastrarata(event) {
     }
 }
 
-// Função para listar todos os ata
+// Função para listar todos as atas
 async function listarata() {
     const aluno = document.getElementById("ataAluno").value.trim();
-    const cgm = document.getElementById("ataAluno").value.trim();
+    const cgm = document.getElementById("ataCgm").value.trim();
     const prof = document.getElementById("ataProfessor").value.trim();
     const monitor = document.getElementById("ataMonitor").value.trim();
     const encaminhamento = document.getElementById("ataEncaminhamentos").value.trim();
     const assunto = document.getElementById("ataAssunto").value.trim();
     const dia = document.getElementById("ataData").value.trim();
     const conteudo = document.getElementById("ataConteudo").value.trim();
-    
-    let url = "/ata"; // URL padrão para todos os ata
+
+    let url = "/ata"; // URL padrão
 
     if (cgm) {
-        // Se aluno atai digitado, adiciona o parâmetro de consulta
         url += `?cgm=${cgm}`;
     }
 
     try {
         const respo = await fetch(url);
+        if (!respo.ok) throw new Error(`Erro HTTP: ${respo.status}`);
         const ata = await respo.json();
 
         const tabela = document.getElementById("tabela-ata");
-        tabela.innerHTML = ""; // Limpa a tabela antes de preencher
+        tabela.innerHTML = "";
 
         if (!Array.isArray(ata) || ata.length === 0) {
-            // Caso não encontre ata, exibe uma mensagem
-            tabela.innerHTML =
-                '<tr><td colspan="6">Nenhum ata encontrado.</td></tr>';
+            tabela.innerHTML = '<tr><td colspan="8">Nenhum ata encontrado.</td></tr>';
         } else {
-          ata.forEach((ataItem) =>  {
+            ata.forEach((ataItem) => {
                 const linha = document.createElement("tr");
                 linha.innerHTML = `
-                  <td>${ataItem.aluno}</td>
-                  <td>${ataItem.cgm}</td>
-                  <td>${ataItem.monitor}</td>
-                  <td>${ataItem.prof}</td>
-                  <td>${ataItem.encaminhamento}</td>
-                  <td>${ataItem.assunto}</td>
-                  <td>${ataItem.dia}</td>
-                  <td>${ataItem.conteudo}</td>
-              `;
+                    <td>${ataItem.aluno}</td>
+                    <td>${ataItem.cgm}</td>
+                    <td>${ataItem.monitor}</td>
+                    <td>${ataItem.prof}</td>
+                    <td>${ataItem.encaminhamento}</td>
+                    <td>${ataItem.assunto}</td>
+                    <td>${ataItem.dia}</td>
+                    <td>${ataItem.conteudo}</td>
+                `;
                 tabela.appendChild(linha);
             });
         }
@@ -84,37 +82,32 @@ async function listarata() {
     }
 }
 
-// Função para atualizar as inatarmações do ata
+// Função para atualizar as informações da ata
 async function atualizarata() {
-        const aluno = document.getElementById("ataAluno").value;
-        const cgm = document.getElementById("ataAluno").value;
-        const dia = document.getElementById("ataData").value;
-        const assunto = document.getElementById("ataAssunto").value;
-        const conteudo = document.getElementById("ataConteudo").value;
-        const monitor = document.getElementById("ataMonitor").value;
-        const prof = document.getElementById("ataProfessor").value;
-        
-    const ataAtualizado = {
-        aluno,
-        cgm,
-        dia,
-        conteudo,
-        assunto,
-        prof,
-        monitor
-    };
+    const aluno = document.getElementById("ataAluno").value;
+    const cgm = document.getElementById("ataCgm").value;
+    const dia = document.getElementById("ataData").value;
+    const assunto = document.getElementById("ataAssunto").value;
+    const conteudo = document.getElementById("ataConteudo").value;
+    const monitor = document.getElementById("ataMonitor").value;
+    const prof = document.getElementById("ataProfessor").value;
+
+    if (!cgm) {
+        alert("Informe o CGM para atualizar a ata.");
+        return;
+    }
+
+    const ataAtualizado = { aluno, cgm, dia, conteudo, assunto, prof, monitor };
 
     try {
         const respo = await fetch(`/ata/cgm/${cgm}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(ataAtualizado),
         });
 
         if (respo.ok) {
-            alert("ata atualizado com sucesso!");
+            alert("Ata atualizada com sucesso!");
         } else {
             const errorMessage = await respo.text();
             alert("Erro ao atualizar ata: " + errorMessage);
