@@ -32,51 +32,44 @@ async function cadastrarfo(event) {
         }
 }
 
-// Função para listar todos os fo
+// Função para listar todos os F.O
 async function listarfo() {
     const turma = document.getElementById('turma').value.trim();
-    // const data = document.getElementById('data').value.trim();
-    // const tipo_fato = document.getElementById('tipoFato').value.trim();
-    // const obs = document.getElementById('observacao').value.trim();
-    // const monitor = document.getElementById('monitor').value.trim();
-
-    let url = "/fo"; // URL padrão para todos os funcionario
+    let url = "/fo";
 
     if (turma) {
-        // Se CPF foi digitado, adiciona o parâmetro de consulta
         url += `?turma=${turma}`;
     }
 
     try {
         const respo = await fetch(url);
+        if (!respo.ok) throw new Error(`Erro HTTP: ${respo.status}`);
         const fo = await respo.json();
 
         const tabela = document.getElementById('tabela-fo');
-        tabela.innerHTML = ''; // Limpa a tabela antes de preencher
+        tabela.innerHTML = '';
 
         if (!Array.isArray(fo) || fo.length === 0) {
-            // Caso não encontre funcionario, exibe uma mensagem
-            tabela.innerHTML =
-                '<tr><td colspan="6">Nenhum fo encontrado.</td></tr>';
+            tabela.innerHTML = '<tr><td colspan="5">Nenhum F.O encontrado.</td></tr>';
         } else {
             fo.forEach((foItem) => {
                 const linha = document.createElement('tr');
                 linha.innerHTML = `
-                    <td>${foItem.aluno-turma}</td>
+                    <td>${foItem.aluno_turma}</td>
                     <td>${foItem.data}</td>
                     <td>${foItem.monitor}</td>
-                     <td>${foItem.tipo_fato}</td>
+                    <td>${foItem.tipo_fato}</td>
                     <td>${foItem.obs}</td>
                 `;
                 tabela.appendChild(linha);
             });
         }
     } catch (error) {
-        console.error('Erro ao listar fo:', error);
+        console.error('Erro ao listar F.O:', error);
     }
 }
 
-// Função para atualizar as informações do funcionario
+// Função para atualizar as informações do F.O
 async function atualizarfo() {
     const turma = document.getElementById('aluno-turma').value;
     const data = document.getElementById('data').value;
@@ -84,33 +77,28 @@ async function atualizarfo() {
     const tipo_fato = document.getElementById('tipoFato').value;
     const monitor = document.getElementById('monitor').value;
 
+    if (!turma) {
+        alert('Informe a turma para atualizar o F.O.');
+        return;
+    }
 
-    const foAtualizado = {
-        turma,
-        data,
-        obs,
-        tipo_fato,
-        monitor
-
-    };
+    const foAtualizado = { turma, data, obs, tipo_fato, monitor };
 
     try {
         const respo = await fetch(`/fo/turma/${turma}`, {
             method: 'PUT',
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(foAtualizado),
         });
 
         if (respo.ok) {
-            alert('fo atualizado com sucesso!');
+            alert('F.O atualizado com sucesso!');
         } else {
             const errorMessage = await respo.text();
-            alert('Erro ao atualizar fo: ' + errorMessage);
+            alert('Erro ao atualizar F.O: ' + errorMessage);
         }
     } catch (error) {
-        console.error('Erro ao atualizar fo:', error);
-        alert('Erro ao atualizar fo.');
+        console.error('Erro ao atualizar F.O:', error);
+        alert('Erro ao atualizar F.O.');
     }
 }
