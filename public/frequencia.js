@@ -10,8 +10,8 @@ async function cadastrarfreq(event) {
         aluno_nome: document.getElementById('prioridade').value,
         justificativa: document.getElementById('justifictiva').value,
         cgm: document.getElementById('acoesSugeridas').value,
-        responsavel: document.getElementById('responsavelfrequencia').value,
-        porcentagem: document.getElementById('content3').value,
+        materia: document.getElementById('responsavelfrequencia').value,
+       
     };
        
     try {

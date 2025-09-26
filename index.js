@@ -117,9 +117,24 @@ const db = new sqlite3.Database('./database.db', (err) => {
                 destinatario TEXT,
                 obs TEXT,
                 aluno TEXT
-    );
+                 );
+ `);
+
+
+    db.run(`
+      CREATE table if not EXISTS frequencia (
+        id_frequencia INTEGER PRIMARY KEY AUTOINCREMENT,
+        dia date NOT NULL,
+        quant_aulas int NOT NULL,
+        ausencias int NOT NULL,
+        turma varchar NOT NULL,
+        cgm INTEGER,
+        materia int,
+        justificativa int,
+       
 
     `);
+
 
     console.log('Tabelas criadas com sucesso.');
 });
@@ -497,6 +512,97 @@ app.put('/aluno/cgm/:cgm', (req, res) => {
             return res.status(404).send('Aluno não encontrado.');
         }
         res.send('Aluno atualizado com sucesso.');
+    });
+});
+
+// Teste para verificar se o servidor está rodando
+app.get('/', (req, res) => {
+    res.send('Servidor está rodando e tabelas criadas!');
+});
+
+// Iniciando o servidor
+app.listen(port, () => {
+    console.log(`Servidor rodando na porta ${port}`);
+});
+
+
+
+
+
+
+
+///////////////////////////// Rotas para frequencia /////////////////////////////
+///////////////////////////// Rotas para frequencia /////////////////////////////
+///////////////////////////// Rotas para frequencia /////////////////////////////
+
+
+
+// Cadastrar frequencia
+app.post('/nome', (req, res) => {
+
+    const {  nome, cgm, turma, materia,id_frequencia,  dia, ausencias,justificativa } = req.body;
+
+    if (!nome || !nome) {
+        return res.status(400).send('Nome e cgm são obrigatórios.');
+    }
+
+    const query = `INSERT INTO aluno (  nome, cgm, turma, materia,id_frequencia,  dia, ausencias,justificativa) VALUES (?,?,?,?,?,?,?,?)
+`;
+    db.run(query, [  nome, cgm, turma, materia,id_frequencia,  dia, ausencias,justificativa ], function (err) {
+        if (err) {
+            return res.status(500).send('Erro ao cadastrar frequencia..');
+        }
+        res.status(201).send({ id: this.lastID, message: 'frequencia cadastrada com sucesso.' });
+    });
+});
+
+// Listar frequencia
+// Endpoint para listar todos os frequencia ou buscar por nome
+app.get('/frequencia', (req, res) => {
+    
+    const nome = req.query.nome || '';  // Recebe o nome da query string (se houver)
+    console.log("ok");
+    if (nome) {
+        // Se nome foi passado, busca aluno que possuam esse nome ou parte dele
+        const query = `SELECT * FROM frequencia WHERE cgm LIKE ?`;
+
+        db.all(query, [`%${nome}%`], (err, rows) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: 'Erro ao buscar frequencia.' });
+            }
+            res.json(rows);  // Retorna os alunos encontrados ou um array vazio
+        });
+    } else {
+        // Se nome não foi passado, retorna todos os aluno
+        const query = `SELECT * FROM frequencia`;
+
+        db.all(query, (err, rows) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: 'Erro ao buscar aluno.' });
+            }
+            res.json(rows);  // Retorna todos os aluno
+        });
+    }
+});
+
+
+
+// Atualizar ferquencia
+app.put('/frequencia/nome/:nome', (req, res) => {
+    const { nome} = req.params;
+    const {   cgm, turma, materia,id_frequencia,  dia, ausencias,justificativa } = req.body;
+
+    const query = `UPDATE frequencia SET nome = ?, cgm= ? , turma=?, materia = ?, id_frequencia =?, dia =? ,ausencias = ? ,justificativa =? `;
+    db.run(query, [  nome, cgm, turma, materia,id_frequencia,  dia, ausencias,justificativa ], function (err) {
+        if (err) {
+            return res.status(500).send('Erro ao atualizar frequencia.');
+        }
+        if (this.changes === 0) {
+            return res.status(404).send('frequencia não encontrada.');
+        }
+        res.send('frequencia atualizada com sucesso.');
     });
 });
 
