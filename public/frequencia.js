@@ -2,15 +2,13 @@ async function cadastrarfreq(event) {
     event.preventDefault();
 
     const frequencia= {
-        turma : document.getElementById('filtroTurma').value,
+        aluno : document.getElementById('student').value,
+        turma : document.getElementById('student').value,
         ausencias: document.getElementById('ausencias'),
-        presencas: document.getElementById('prazoResposta').value,
-        total_aulas: document.getElementById('prioridade').value,
         data_aula: document.getElementById('date').value,
-        aluno_nome: document.getElementById('prioridade').value,
-        justificativa: document.getElementById('justifictiva').value,
-        cgm: document.getElementById('acoesSugeridas').value,
-        materia: document.getElementById('responsavelfrequencia').value,
+        justificativa: document.getElementById('justified').value,
+        cgm: document.getElementById('student').value,
+        materia: document.getElementById('subject').value,
        
     };
        
@@ -39,20 +37,19 @@ async function cadastrarfreq(event) {
 
 // Função para listar todos os frequencias 
 async function listarfrequencia() {
-        const turma = document.getElementById('filtroTurma').value.trim();
+        const aluno = document.getElementById('student').value.trim();
+        const turma = document.getElementById('student').value.trim();
         const ausencias = document.getElementById('ausencias').value.trim();
-        const presencas = document.getElementById('prazoResposta').value.trim();
-        const total_aulas = document.getElementById('prioridade').value.trim();
         const data_aula = document.getElementById('date').value.trim ();
-        const cgm = document.getElementById('filtroTurma').value.trim ();
-        const justificativa = document.getElementById('justificativa').value.trim();
-        const aluno_nome = document.getElementById('prioridade').value.trim(); 
+        const cgm = document.getElementById('student').value.trim ();
+        const justificativa = document.getElementById('justified').value.trim();
+        const materia = document.getElementById('subject').value.trim(); 
 
     let url = '/frequencia';  // URL padrão para todos os funcionario
 
     if (cgm) {
         // Se turma foi digitado, adiciona o parâmetro de consulta
-        url += `?aluno_nome=${cgm}`;
+        url += `?cgm=${cgm}`;
     }
 
     try {
@@ -69,15 +66,13 @@ async function listarfrequencia() {
             frequencia.forEach(frequenciaItem => {
                 const linha = document.createElement('tr');
                 linha.innerHTML = `
-                    <td>${frequenciaItem.turma}</td>
+                    <td>${frequenciaItem.aluno  }</td>
                     <td>${frequenciaItem.justificativa}</td>
                     <td>${frequenciaItem.ausencias}</td>
-                    <td>${frequenciaItem.total_aulas}</td>
                     <td>${frequenciaItem.data_aula}</td>
                     <td>${frequenciaItem.cgm }</td>
-                    <td>${frequenciaItem.aluno_nome}</td>
-                    <td>${frequenciaItem.presencas}</td>
-                    <td>${frequenciaItem.porcentagem }</td>
+                    <td>${frequenciaItem.materia }</td>
+                     <td>${frequenciaItem.turma }</td>
 
                 `;
                 tabela.appendChild(linha);
@@ -90,25 +85,23 @@ async function listarfrequencia() {
 
 // Função para atualizar as informações do frequencia
 async function atualizarfrequencia() {
-   const turma = document.getElementById('filtroTurma').value.trim();
-        const ausencias = document.getElementById('ausencias').value.trim();
-        const presencas = document.getElementById('prazoResposta').value.trim();
-        const total_aulas = document.getElementById('prioridade').value.trim();
-        const data_aula = document.getElementById('date').value.trim ();
-        const cgm = document.getElementById('filtroTurma').value.trim ();
-        const justificativa = document.getElementById('justificativa').value.trim();
-        const aluno_nome = document.getElementById('prioridade').value.trim(); 
+    const aluno = document.getElementById('syudent').value.trim();
+    const ausencias = document.getElementById('ausencias').value.trim();
+    const data_aula = document.getElementById('date').value.trim ();
+    const cgm = document.getElementById('student').value.trim ();
+    const justificativa = document.getElementById('justified').value.trim();
+    const materia = document.getElementById('subject').value.trim(); 
+    const turma = document.getElementById('student').value.trim();
 
     const frequenciaAtualizado = {
         turma,
-        aluno_nome,
+        aluno,
         justificativa,
-        total_aulas,
         data_aula,
         cgm,
         ausencias,
-        presencas,
-        porcentagem
+        materia
+        
           
     };
 
